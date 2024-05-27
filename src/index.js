@@ -5,6 +5,7 @@ import { AuthContextProvider } from "./contexts/AuthContext";
 import "./styles/tailwind.css";
 import ErrorBoundary from "./components/common/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import "./styles/globals.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

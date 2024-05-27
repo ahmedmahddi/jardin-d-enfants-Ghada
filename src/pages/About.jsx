@@ -1,23 +1,17 @@
 import React from "react";
-import Header from "../components/common/Header";
-import Navigation from "../components/common/Navigation";
 import AboutContent from "../components/about/AboutContent";
 import Testimonials from "../components/about/Testimonials";
 import PhotoGallery from "../components/about/PhotoGallery";
-import Footer from "../components/common/Footer";
 
 const About = () => {
   return (
-    <>
-      <Header />
-      <Navigation />
-      <main>
+    <div className="relative min-h-screen w-screen rounded-lg shadow-lg overflow-hidden">
+      <div>
         <AboutContent />
         <Testimonials />
         <PhotoGallery />
-      </main>
-      <Footer />
-    </>
+      </div>
+    </div>
   );
 };
 

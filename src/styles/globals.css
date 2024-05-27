@@ -1,0 +1,53 @@
+header {
+  background-color: #ffe3cf;
+  font-family: "Bubblegum Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.logo {
+  width: 90px;
+  height: auto;
+  display: block;
+  text-indent: -9999px;
+}
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
+}
+/* Add this to your CSS file or in a <style> tag */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(-4px);
+  }
+}
+
+.shake {
+  animation: shake 0.3s;
+  border-color: #ff0000;
+}
+
+.border-red-500 {
+  border-color: #ff0000;
+}

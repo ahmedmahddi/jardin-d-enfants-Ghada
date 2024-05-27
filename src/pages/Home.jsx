@@ -1,18 +1,20 @@
 import React from "react";
-import Header from "../components/common/Header";
-//import Navigation from "../components/common/Navigation";
+
+import PointsForts from "../components/home/PointsForts";
 import WelcomeSection from "../components/home/WelcomeSection";
-import Footer from "../components/common/Footer";
+import Services from "../components/programs/Services";
+import Team from "../components/staff/staff";
 
 const Home = () => {
   return (
-    <>
-      <Header />
+    <div className="relative min-h-screen w-screen rounded-lg shadow-lg overflow-hidden">
       <main>
         <WelcomeSection />
+        <PointsForts />
+        <Services />
+        <Team />
       </main>
-      <Footer />
-    </>
+    </div>
   );
 };
 

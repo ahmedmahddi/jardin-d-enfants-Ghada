@@ -1,23 +1,19 @@
 import React from "react";
-import Header from "../components/common/Header";
-import Navigation from "../components/common/Navigation";
+import WelcomeSection from "../components/programs/WelcomeSection";
 import ProgramDetails from "../components/programs/ProgramDetails";
 import DailySchedule from "../components/programs/DailySchedule";
 import ExtracurricularActivities from "../components/programs/ExtracurricularActivities";
-import Footer from "../components/common/Footer";
 
 const Programs = () => {
   return (
-    <>
-      <Header />
-      <Navigation />
-      <main>
+    <div className="relative min-h-screen bg-center rounded-lg shadow-lg">
+      <div>
+        <WelcomeSection />
         <ProgramDetails />
         <DailySchedule />
         <ExtracurricularActivities />
-      </main>
-      <Footer />
-    </>
+      </div>
+    </div>
   );
 };
 

@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import Header from "../components/common/Header";
-import Footer from "../components/common/Footer";
 
 const Register = () => {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -17,8 +15,7 @@ const Register = () => {
   };
 
   return (
-    <>
-      <Header />
+    <div>
       <main className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-500 to-purple-500">
         <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
           <h2 className="text-2xl font-bold mb-4">Register</h2>
@@ -65,8 +62,7 @@ const Register = () => {
           </form>
         </div>
       </main>
-      <Footer />
-    </>
+    </div>
   );
 };
 

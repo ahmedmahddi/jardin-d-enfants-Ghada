@@ -1,55 +1,40 @@
-// ProgramDetails.jsx
 import React from "react";
 
 const ProgramDetails = () => {
   const programs = [
     {
-      id: 1,
-      title: "Infant Program",
-      description:
-        "Our infant program provides a safe and nurturing environment for babies aged 6 weeks to 12 months. Our experienced caregivers attend to the individual needs of each child, offering plenty of cuddles, playtime, and age-appropriate activities.",
-      curriculum: [
-        "Sensory exploration",
-        "Tummy time",
-        "Music and movement",
-        "Language development",
-      ],
+      title: "Programme Maternelle",
+      description: "Activités pour développer les compétences de base.",
     },
     {
-      id: 2,
-      title: "Toddler Program",
-      description:
-        "Our toddler program is designed for children aged 12 months to 3 years. We focus on developing social skills, language, and independence through play-based learning and structured activities.",
-      curriculum: [
-        "Imaginative play",
-        "Art and crafts",
-        "Storytime",
-        "Outdoor exploration",
-      ],
+      title: "Programme Préscolaire",
+      description: "Préparation à l’entrée à l’école primaire.",
     },
-    // Add more programs here
+    {
+      title: "Programme Ludique",
+      description: "Jeux et activités pour l’épanouissement.",
+    },
   ];
 
   return (
-    <div className="p-8">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Our Programs</h2>
-      {programs.map(program => (
-        <div key={program.id} className="mb-8">
-          <h3 className="text-xl font-bold text-gray-800 mb-2">
-            {program.title}
-          </h3>
-          <p className="text-gray-600 mb-4">{program.description}</p>
-          <h4 className="text-lg font-bold text-gray-800 mb-2">
-            Curriculum Highlights:
-          </h4>
-          <ul className="list-disc list-inside text-gray-600">
-            {program.curriculum.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
+    <section className="w-screen py-12 rounded-lg shadow-lg bg-gray-100">
+      <h2 className="text-3xl font-bold text-center mb-8 text-dark-blue">
+        Nos Programmes
+      </h2>
+      <div className="max-w-4xl mx-auto grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ">
+        {programs.map(program => (
+          <div
+            key={program.title}
+            className="bg-yellow-100 p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300"
+          >
+            <h3 className="text-2xl font-semibold mb-4 text-dark-blue">
+              {program.title}
+            </h3>
+            <p className="text-dark-blue">{program.description}</p>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 };
 

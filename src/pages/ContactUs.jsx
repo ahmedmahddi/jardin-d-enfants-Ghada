@@ -1,21 +1,13 @@
 import React from "react";
-import Header from "../components/common/Header";
-import Navigation from "../components/common/Navigation";
 import ContactForm from "../components/contact/ContactForm";
-// import Map from "../components/contact/Map";
-import Footer from "../components/common/Footer";
 
 const ContactUs = () => {
   return (
-    <>
-      <Header />
-      <Navigation />
+    <div className="relative min-h-screen w-screen rounded-lg shadow-lg overflow-hidden">
       <main>
         <ContactForm />
-        {/* <Map /> */}
       </main>
-      <Footer />
-    </>
+    </div>
   );
 };
 
