@@ -1,32 +1,45 @@
-import React, { createContext, useState, useMemo } from "react";
+// src/contexts/AuthContext.jsx
+import React, { createContext, useState } from "react";
 import PropTypes from "prop-types";
+import axiosInstance from "../utils/axiosInstance.js";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
-const AuthContextProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
 
-  // Simulating authentication function
-  const login = () => setIsAuthenticated(true);
-  const logout = () => setIsAuthenticated(false);
+  AuthProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+  };
 
-  // Memoize the context value to avoid unnecessary re-renders
-  const contextValue = useMemo(
-    () => ({
-      isAuthenticated,
-      login,
-      logout,
-    }),
-    [isAuthenticated]
-  );
+  const login = async credentials => {
+    try {
+      const response = await axiosInstance.post("user/login", credentials);
+      console.log("Login response:", response.data); // Log response
+      if (response.status === 200 && response.data) {
+        setIsAuthenticated(true);
+        setUser(response.data);
+        return { success: true };
+      } else {
+        return { success: false, message: response.message || "Login failed" };
+      }
+    } catch (err) {
+      const errorMessage = err.response
+        ? err.response.data.message
+        : "Login failed";
+      return { success: false, message: errorMessage };
+    }
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    setUser(null);
+  };
 
   return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
-
-AuthContextProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export { AuthContext, AuthContextProvider };

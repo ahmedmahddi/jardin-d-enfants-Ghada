@@ -1,21 +1,24 @@
+// src/index.js
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { AuthContextProvider } from "./contexts/AuthContext";
 import "./styles/tailwind.css";
-import ErrorBoundary from "./components/common/ErrorBoundary";
+import ErrorBoundary from "./(non-authenticated)/common/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { AuthProvider } from "./contexts/AuthContext"; // Import AuthProvider
 import "./styles/globals.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <ThemeProvider>
-      <AuthContextProvider>
+    <AuthProvider>
+      {" "}
+      {/* Wrap with AuthProvider */}
+      <ThemeProvider>
         <ErrorBoundary>
           <App />
         </ErrorBoundary>
-      </AuthContextProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
