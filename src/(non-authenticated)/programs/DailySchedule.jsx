@@ -12,11 +12,11 @@ const DailySchedule = () => {
   ];
 
   return (
-    <section className="bg-gradient-to-r from-yellow-100 to-pink-50 py-12 rounded-lg shadow-lg w-screen">
-      <h2 className="text-3xl font-bold text-center mb-8 text-dark-blue">
+    <section className="bg-gradient-to-r from-yellow-50 to-pink-50 py-12 rounded-lg shadow-lg w-screen">
+      <h2 className="text-3xl font-bold text-center mb-8 text-orange">
         Horaire Quotidien
       </h2>
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-xl mx-auto">
         {schedule.map(item => (
           <div
             key={item.time}

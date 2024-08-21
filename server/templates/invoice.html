@@ -1,0 +1,220 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Facture</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+      }
+      .invoice-container {
+        width: 100%;
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 2px solid #e56d4b;
+        padding-bottom: 10px;
+      }
+      .header .invoice-logo-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .header .invoice-logo img {
+        width: 150px;
+        height: auto;
+        margin-top: 10px;
+      }
+      .header .invoice-head h2 {
+        color: #e56d4b;
+      }
+      .header .invoice-info {
+        text-align: right;
+        margin-left: auto;
+      }
+      .footer {
+        border-top: 2px solid #e56d4b;
+        margin-top: 20px;
+        font-size: 0.9em;
+        color: #888;
+        text-align: center;
+        padding: 10px 0;
+      }
+      .content {
+        padding: 20px 0;
+      }
+      .invoice-details {
+        display: flex;
+        justify-content: space-between;
+        margin: 20px 0;
+      }
+      .invoice-details div {
+        width: 45%;
+        padding: 10px;
+      }
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      .table th,
+      .table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+      }
+      .table th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+      .table-total {
+        font-weight: bold;
+        background-color: #f2f2f2;
+        color: #e56d4b;
+      }
+      .notes,
+      .terms {
+        display: block;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .signature-space {
+        border: 1px solid #ddd;
+        padding: 20px;
+        text-align: center;
+        box-sizing: border-box;
+        height: 150px;
+      }
+      .notes-terms-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+      .left-side {
+        width: 60%;
+      }
+      .right-side {
+        width: 35%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .invoice-issues-box {
+        margin-bottom: 20px;
+        background-color: #e56d4b;
+        border-radius: 8px;
+        padding: 10px;
+        display: flex;
+        justify-content: space-evenly;
+        font-weight: bold;
+      }
+      .invoice-issues-box .col-lg-4,
+      .invoice-issues-box .col-md-4 {
+        width: 50%;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="invoice-container">
+      <div class="header">
+        <div class="invoice-logo-container">
+          <div class="invoice-logo">
+            <img src="https://i.ibb.co/6041wJZ/logo-JDG.png" alt="Logo" />
+          </div>
+          <div class="invoice-head">
+            <h2>Jardin d'enfant Ghada</h2>
+            <p>Numéro de Facture: ${invoiceID}</p>
+          </div>
+        </div>
+        <div class="invoice-info">
+          <h2>Facture De</h2>
+          <p>Jardin d'enfant Ghada</p>
+          <p>+216 99 890 625</p>
+          <p>138 Av. Errached Sakiet Eddaier</p>
+          <p>3011, Sfax - Tunisie</p>
+        </div>
+      </div>
+      <div class="content">
+        <div class="invoice-details">
+          <div>
+            <h3>Facture</h3>
+            <p>Numéro de Facture: ${invoiceID}</p>
+            <p>Date d'Émission: ${issueDate}</p>
+            <p>Date d'Échéance: ${dueDate}</p>
+          </div>
+          <div>
+            <h3>Facturé à</h3>
+            <p>Nom du Parent: ${parentName}</p>
+            <p>Téléphone du Parent: ${parentPhone}</p>
+            <p>Email du Parent: ${parentEmail}</p>
+          </div>
+        </div>
+        <div class="invoice-issues-box">
+          <div class="col-lg-4 col-md-4">
+            <p>Date d'Émission: ${issueDate}</p>
+          </div>
+          <div class="col-lg-4 col-md-4">
+            <p>Date d'Échéance: ${dueDate}</p>
+          </div>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Montant</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${children}
+            <tr class="table-total">
+              <td>Total</td>
+              <td>$${totalAmount}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="notes-terms-container">
+          <div class="left-side">
+            <div class="notes">
+              <h4>Notes:</h4>
+              <p>
+                Merci de régler votre facture dans les 30 jours pour continuer à
+                bénéficier de nos services.
+              </p>
+            </div>
+            <div class="terms">
+              <h4>Conditions Générales:</h4>
+              <p>
+                Tous les services fournis sont régis par les conditions
+                générales de vente disponibles sur demande.
+              </p>
+            </div>
+          </div>
+          <div class="right-side">
+            <div class="signature-space">
+              Signature:<br />
+              <span style="font-size: 0.85em; color: #888"
+                >(Authorized Signature)</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <p>Merci pour votre confiance!</p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -40,7 +40,7 @@ const services = [
 
 const Services = () => {
   return (
-    <section className="flex justify-center items-center w-screen py-12 px-4 bg-gradient-to-r from-yellow-100 to-pink-50 rounded-lg shadow-lg">
+    <section className="flex justify-center items-center w-screen py-12 px-4 bg-gradient-to-r from-yellow-50 to-pink-50 rounded-lg shadow-lg">
       <div className="w-full max-w-screen-xl mx-auto ">
         <h2 className="text-3xl font-semibold text-center mb-8 text-dark-blue">
           Nos Services

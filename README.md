@@ -1,77 +1,3 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-# Project Structure
-
-
 ```
 client
 ├─ .gitignore
@@ -95,88 +21,178 @@ client
 │  └─ robots.txt
 ├─ README.md
 ├─ server
-│  ├─ .env
 │  ├─ .gitignore
 │  ├─ app.js
+│  ├─ assets
+│  │  └─ logo-JDG.png
+│  ├─ combined.log
+│  ├─ config
+│  │  └─ db.js
 │  ├─ controllers
-│  │  ├─ assignStaff.controller.js
-│  │  ├─ bill.controller.js
+│  │  ├─ attendance.controller.js
+│  │  ├─ auth.controller.js
 │  │  ├─ child.controller.js
-│  │  ├─ employeeReg.controller.js
+│  │  ├─ communication.controller.js
+│  │  ├─ curriculum.controller.js
 │  │  ├─ enrollment.controller.js
+│  │  ├─ evaluation.controller.js
 │  │  ├─ event.controller.js
+│  │  ├─ image.controller.js
 │  │  ├─ index.js
-│  │  ├─ medicine.controller.js
+│  │  ├─ invoice.controller.js
+│  │  ├─ noticeboard.controller.js
+│  │  ├─ notification.controller.js
 │  │  ├─ payment.controller.js
-│  │  ├─ paymentInquery.controller.js
-│  │  ├─ schedule.controller.js
+│  │  ├─ report.controller.js
+│  │  ├─ staff.controller.js
 │  │  └─ user.controller.js
+│  ├─ cron
+│  │  └─ invoice.cron.js
+│  ├─ error.log
+│  ├─ invoices
+│  │  ├─ invoice-10-ahmed_mahdi.pdf
+│  │  ├─ invoice-11-ahmed_mahdi.pdf
+│  │  ├─ invoice-12-ahmed_mahdi.pdf
+│  │  ├─ invoice-13-ahmed_mahdi.pdf
+│  │  ├─ invoice-14-lotfi_dammak.pdf
+│  │  ├─ invoice-15-lotfi_dammak.pdf
+│  │  ├─ invoice-16-ahmed_mahdi.pdf
+│  │  ├─ invoice-17-ahmed_mahdi.pdf
+│  │  ├─ invoice-61-lotfi_dammak.pdf
+│  │  ├─ invoice-62-lamia_dammak.pdf
+│  │  ├─ invoice-63-lamia_dammak.pdf
+│  │  ├─ invoice-64-lamia_dammak.pdf
+│  │  ├─ invoice-65-lamia_dammak.pdf
+│  │  ├─ invoice-66-lamia_dammak.pdf
+│  │  ├─ invoice-67-lotfi_dammak.pdf
+│  │  ├─ invoice-68-lamia_dammak.pdf
+│  │  └─ invoice-9-ahmed_mahdi.pdf
 │  ├─ middleware
-│  │  └─ auth.middleware.js
+│  │  ├─ access.log
+│  │  ├─ auth.middleware.js
+│  │  ├─ error.middleware.js
+│  │  ├─ logger.middleware.js
+│  │  ├─ protect.middleware.js
+│  │  └─ wlogger.middleware.js
+│  ├─ mockdata.js
 │  ├─ models
-│  │  ├─ assignStaff.models.js
-│  │  ├─ bill.models.js
-│  │  ├─ child.models.js
-│  │  ├─ employeeReg.models.js
+│  │  ├─ attendance.model.js
+│  │  ├─ children.model.js
+│  │  ├─ communication.model.js
+│  │  ├─ curriculum.model.js
 │  │  ├─ enrollment.model.js
-│  │  ├─ event.models.js
+│  │  ├─ evaluation.model.js
+│  │  ├─ event.model.js
+│  │  ├─ image.model.js
 │  │  ├─ index.js
-│  │  ├─ medicine.models.js
-│  │  ├─ payment.models.js
-│  │  ├─ paymentInquery.models.js
-│  │  ├─ schedule.models.js
-│  │  └─ user.models.js
+│  │  ├─ invoice.model.js
+│  │  ├─ noticeboard.model.js
+│  │  ├─ notification.model.js
+│  │  ├─ parentPayment.model.js
+│  │  ├─ report.model.js
+│  │  ├─ staff.model.js
+│  │  ├─ staffPayment.model.js
+│  │  └─ user.model.js
 │  ├─ package-lock.json
 │  ├─ package.json
 │  ├─ README.md
-│  ├─ repository
-│  │  ├─ assignStaff.repository.js
-│  │  ├─ bill.repository.js
-│  │  ├─ child.repository.js
-│  │  ├─ employeeReg.repository.js
-│  │  ├─ enrollment.repository.js
-│  │  ├─ event.repository.js
-│  │  ├─ index.js
-│  │  ├─ medicine.repository.js
-│  │  ├─ payment.repository.js
-│  │  ├─ paymentInquery.repository.js
-│  │  ├─ schedule.repository.js
-│  │  └─ user.repository.js
 │  ├─ routes
-│  │  ├─ assignStaff.route.js
-│  │  ├─ bill.route.js
-│  │  ├─ child.route.js
-│  │  ├─ employeeReg.route.js
-│  │  ├─ enrollment.route.js
-│  │  ├─ event.route.js
+│  │  ├─ attendance.routes.js
+│  │  ├─ auth.routes.js
+│  │  ├─ child.routes.js
+│  │  ├─ communication.routes.js
+│  │  ├─ curriculum.routes.js
+│  │  ├─ enrollment.routes.js
+│  │  ├─ evaluation.routes.js
+│  │  ├─ event.routes.js
+│  │  ├─ image.route.js
 │  │  ├─ index.js
-│  │  ├─ medicine.route.js
-│  │  ├─ payment.route.js
-│  │  ├─ paymentInquery.route.js
-│  │  ├─ schedule.route.js
-│  │  └─ user.route.js
+│  │  ├─ invoice.routes.js
+│  │  ├─ noticeboard.routes.js
+│  │  ├─ notification.routes.js
+│  │  ├─ payment.routes.js
+│  │  ├─ report.routes.js
+│  │  ├─ staff.routes.js
+│  │  └─ user.routes.js
+│  ├─ seed.js
 │  ├─ server.js
 │  ├─ services
-│  │  ├─ assignStaff.service.js
-│  │  ├─ bill.service.js
+│  │  ├─ attendance.service.js
+│  │  ├─ auth.service.js
 │  │  ├─ child.service.js
-│  │  ├─ employeeReg.service.js
+│  │  ├─ communication.service.js
+│  │  ├─ curriculum.service.js
 │  │  ├─ enrollment.service.js
+│  │  ├─ evalution.service.js
 │  │  ├─ event.service.js
+│  │  ├─ image.service.js
 │  │  ├─ index.js
-│  │  ├─ medicine.service.js
+│  │  ├─ invoice.service.js
+│  │  ├─ noticeboard.service.js
+│  │  ├─ notification.service.js
 │  │  ├─ payment.service.js
-│  │  ├─ paymentInquery.service.js
-│  │  ├─ schedule.service.js
+│  │  ├─ report.service.js
+│  │  ├─ staff.service.js
 │  │  └─ user.service.js
+│  ├─ templates
+│  │  ├─ invoice.html
+│  │  └─ receipt.html
 │  └─ utils
+│  │  ├─ auth.js
 │     ├─ appError.js
-│     ├─ db.js
 │     ├─ dbConnect.js
 │     ├─ email.js
 │     └─ success.js
 ├─ src
 │  ├─ (authenticated)
+│  │  ├─ adminPortal
+│  │  │  ├─ AdminPortal.jsx
+│  │  │  ├─ Children
+│  │  │  │  ├─ AddChild.jsx
+│  │  │  │  ├─ ChildrenList.jsx
+│  │  │  │  ├─ UpdateChild.jsx
+│  │  │  │  └─ ViewChild.jsx
+│  │  │  ├─ Dashboard
+│  │  │  │  ├─ ChildrenByGenderChart.jsx
+│  │  │  │  ├─ Dashboard.jsx
+│  │  │  │  ├─ SummaryCard.jsx
+│  │  │  │  └─ UpcomingEvents.jsx
+│  │  │  ├─ Enrollment
+│  │  │  │  ├─ EnrollmentDetailsModal.jsx
+│  │  │  │  └─ EnrollmentList.jsx
+│  │  │  ├─ Invoice
+│  │  │  │  ├─ CreateInvoice.jsx
+│  │  │  │  ├─ GenerateReport.jsx
+│  │  │  │  ├─ InvoiceDetailsModal.jsx
+│  │  │  │  └─ InvoiceList.jsx
+│  │  │  └─ Staff
+│  │  │     ├─ AddStaff.jsx
+│  │  │     ├─ StaffList.jsx
+│  │  │     ├─ UpdateStaff.jsx
+│  │  │     └─ ViewStaff.jsx
+│  │  ├─ api
+│  │  │  ├─ Children
+│  │  │  │  └─ children.api.js
+│  │  │  ├─ Enrollment
+│  │  │  │  └─ enrollment.api.js
+│  │  │  ├─ Invoice
+│  │  │  │  └─ invoice.api.js
+│  │  │  └─ Staff
+│  │  │     └─ staff.api.js
+│  │  ├─ assets
+│  │  │  └─ images
+│  │  │     ├─ avatar-placeholder.jpg
+│  │  │     ├─ avatar-placeholder.png
+│  │  │     ├─ logo-JDG-with-background copy no name1.png
+│  │  │     ├─ logo-JDG.png
+│  │  │     ├─ students-svg.svg
+│  │  │     └─ teachers-svg.svg
+│  │  ├─ common
+│  │  │  ├─ ConfirmationModal.jsx
+│  │  │  ├─ Header.jsx
+│  │  │  ├─ Notification.jsx
+│  │  │  ├─ PrivateRoute.jsx
+│  │  │  └─ Sidebar.jsx
 │  │  ├─ parentPortal
 │  │  │  ├─ ChildProfile.jsx
 │  │  │  ├─ CommunicationTools.jsx
@@ -197,6 +213,8 @@ client
 │  │  │     ├─ childrenIMG.png
 │  │  │     ├─ logo-JDG-with-background copy no name1.png
 │  │  │     ├─ logo-JDG.png
+│  │  │     ├─ pattern-bg.webp
+│  │  │     ├─ playful-bg.webp
 │  │  │     └─ playground.png
 │  │  ├─ common
 │  │  │  ├─ ErrorBoundary.jsx
@@ -230,8 +248,20 @@ client
 │  ├─ App.js
 │  ├─ auth
 │  ├─ contexts
+│  │  ├─ AuthContext.jsx
 │  │  └─ ThemeContext.jsx
+│  ├─ hooks
+│  │  ├─ useDebounce.js
+│  │  ├─ useModal.js
+│  │  ├─ usePagination.js
+│  │  ├─ useSearch.js
+│  │  └─ useSort.js
 │  ├─ index.js
+│  ├─ layouts
+│  │  ├─ AuthLayout.jsx
+│  │  └─ NonAuthLayout.jsx
+│  ├─ queryClient.js
+│  ├─ README.md
 │  ├─ routes
 │  ├─ styles
 │  │  ├─ globals.css

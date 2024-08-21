@@ -1,53 +1,58 @@
+// controllers/child.controller.js
 import {
-  saveChildService,
-  updateChildService,
-  deleteChildService,
-  getChildByIdService,
-  getAllChildrenService,
-} from "../services/index.js";
-import Success from "../utils/success.js";
+  createChild,
+  getChildById,
+  updateChild,
+  deleteChild,
+  getAllChildren,
+} from "../services/child.service.js";
 
-export const saveChildController = async (req, res) => {
+export const create = async (req, res) => {
   try {
-    const child = await saveChildService(req.body);
-    res.json(Success(child, "Successfully child added."));
-  } catch (err) {
-    res.status(err.status).json(err.message);
+    const child = await createChild(req.body);
+    res.status(201).json(child);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };
 
-export const updateChildController = async (req, res) => {
+export const getById = async (req, res) => {
   try {
-    const child = await updateChildService(req.params.id, req.body);
-    res.json(Success(child, "Successfully child updated."));
-  } catch (err) {
-    res.status(err.status).json(err.message);
+    const child = await getChildById(req.params.id);
+    if (!child) {
+      return res.status(404).json({ error: "Child not found" });
+    }
+    res.status(200).json(child);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };
 
-export const deleteChildController = async (req, res) => {
+export const getAll = async (req, res) => {
   try {
-    await deleteChildService(req.params.id);
-    res.json(Success({}, "Successfully child deleted."));
-  } catch (err) {
-    res.status(err.status).json(err.message);
+    const { page, limit } = req.query;
+
+    const children = await getAllChildren(parseInt(page), parseInt(limit));
+    res.status(200).json(children);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };
 
-export const getChildByIdController = async (req, res) => {
+export const update = async (req, res) => {
   try {
-    const child = await getChildByIdService(req.params.id);
-    res.json(Success(child, "Successfully fetched single child."));
-  } catch (err) {
-    res.status(err.status).json(err.message);
+    const child = await updateChild(req.params.id, req.body);
+    res.status(200).json(child);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };
 
-export const getAllChildrenController = async (req, res) => {
+export const remove = async (req, res) => {
   try {
-    const children = await getAllChildrenService();
-    res.json(Success(children, "Successfully fetched all children."));
-  } catch (err) {
-    res.status(err.status).json(err.message);
+    await deleteChild(req.params.id);
+    res.status(204).send();
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };

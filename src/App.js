@@ -1,4 +1,3 @@
-// src/App.js
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -10,10 +9,13 @@ import Enrollment from "./(non-authenticated)/enrollment/Enrollment";
 import ContactUs from "./(non-authenticated)/contact/ContactUs";
 import PourquoiNousChoisir from "./(non-authenticated)/home/PourquoiNousChoisir";
 import Login from "./(non-authenticated)/login/Login";
-import Register from "./(non-authenticated)/register/Register";
-
+import ResetPassword from "./(non-authenticated)/login/reset-password";
+import NewPassword from "./(non-authenticated)/login/newPassword";
+import ConditionPage from "./(non-authenticated)/conditions/condtion_genrale";
+import PrivacyPolicy from "./(non-authenticated)/conditions/policy";
+import Licences from "./(non-authenticated)/conditions/licence";
 // Import authenticated pages
-import ParentPortal from "./(authenticated)/parentPortal/ParentPortal";
+import AdminPortal from "./(authenticated)/adminPortal/AdminPortal";
 
 // Import common components
 import PrivateRoute from "./(authenticated)/common/PrivateRoute";
@@ -31,8 +33,12 @@ const App = () => {
           <Route path="programs" element={<Programs />} />
           <Route path="enrollment" element={<Enrollment />} />
           <Route path="contact" element={<ContactUs />} />
+          <Route path="terms" element={<ConditionPage />} />
+          <Route path="privacy" element={<PrivacyPolicy />} />
+          <Route path="licensing" element={<Licences />} />
           <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
+          <Route path="reset-password" element={<ResetPassword />} />
+          <Route path="reset-password/:token" element={<NewPassword />} />
           <Route
             path="pourquoi-nous-choisir"
             element={<PourquoiNousChoisir />}
@@ -40,9 +46,9 @@ const App = () => {
         </Route>
 
         {/* Authenticated routes */}
-        <Route element={<PrivateRoute />}>
-          <Route path="/" element={<AuthLayout />}>
-            <Route path="parent-portal" element={<ParentPortal />} />
+        <Route path="/" element={<PrivateRoute />}>
+          <Route path="admin/*" element={<AuthLayout />}>
+            <Route path="*" element={<AdminPortal />} />
           </Route>
         </Route>
       </Routes>

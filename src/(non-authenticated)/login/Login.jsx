@@ -1,4 +1,3 @@
-// src/(non-authenticated)/login/Login.jsx
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -6,72 +5,138 @@ import logo from "../assets/images/logo-JDG.png";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
-    userName: "",
+    email: "",
     password: "",
+    role: "",
+    rememberMe: false,
   });
   const [error, setError] = useState("");
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleChange = e => {
-    const { name, value } = e.target;
-    setCredentials({ ...credentials, [name]: value });
+    const { name, value, type, checked } = e.target;
+    setCredentials({
+      ...credentials,
+      [name]: type === "checkbox" ? checked : value,
+    });
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
     const response = await login(credentials);
-    console.log("Login result:", response); // Log response
     if (response.success) {
-      navigate("/parent-portal");
+      navigate("/admin");
     } else {
       setError(response.message);
     }
   };
 
+  const handleResetPassword = () => {
+    navigate("/reset-password"); // Assuming you have a route for reset password
+  };
+
   return (
-    <div>
-      <main className="flex justify-center items-center h-screen bg-gradient-to-r from-yellow-100 to-pink-50 w-screen">
-        <div className="bg-white bg-opacity-90 p-8 rounded-xl shadow-md w-full max-w-sm">
-          <div className="flex flex-col items-center mb-4">
-            <img src={logo} alt="Daycare Logo" className="h-20 w-50" />
-            <h2 className="text-2xl font-bold mb-4 text-center text-orange">
-              Jardin d'enfant Ghada
-            </h2>
-          </div>
-          <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="flex flex-col justify-between h-screen bg-gradient-to-r from-yellow-50 to-pink-50">
+      <main className="flex items-center justify-center grow">
+        <div className="p-6 bg-white bg-opacity-50 rounded-lg shadow-md w-full max-w-md">
+          <img src={logo} alt="Daycare Logo" className="mx-auto h-20 mb-4" />
+          <h2 className="text-center text-xl text-blue-800 mb-6">
+            Jardin d'enfant Ghada
+          </h2>
+          <p className="text-center text-lg text-blue-800 mb-6">
+            veuillez saisir vos identifiants fournis dans l'e-mail reçu.
+          </p>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-lg text-gray-700">Username</label>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email:
+              </label>
               <input
-                type="text"
-                name="userName"
-                value={credentials.userName}
+                type="email"
+                id="email"
+                name="email"
+                value={credentials.email}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-                placeholder="john.doe@example.com"
                 required
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
             </div>
             <div>
-              <label className="block text-lg text-gray-700">Password</label>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Mot de passe:
+              </label>
               <input
                 type="password"
+                id="password"
                 name="password"
                 value={credentials.password}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-                placeholder="********"
                 required
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
             </div>
-            {error && <div className="text-red-500">{error}</div>}
+            <div>
+              <label
+                htmlFor="role"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Choisir un Role
+              </label>
+              <select
+                id="role"
+                name="role"
+                value={credentials.role}
+                onChange={handleChange}
+                required
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              >
+                <option value="">Select a role</option>
+                <option value="parent">Parent</option>
+                <option value="admin">Admin</option>
+                <option value="staff">Enseignant</option>
+              </select>
+            </div>
+            <div className="flex items-center">
+              <input
+                id="rememberMe"
+                name="rememberMe"
+                type="checkbox"
+                checked={credentials.rememberMe}
+                onChange={handleChange}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label
+                htmlFor="rememberMe"
+                className="ml-2 block text-sm text-gray-900"
+              >
+                Se souvenir de moi
+              </label>
+            </div>
+            {error && <div className="text-red-500 text-xs mt-2">{error}</div>}
             <button
               type="submit"
-              className="bg-blue-500 text-white w-full py-2 rounded hover:bg-blue-600 transition duration-300"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Se Connecter
             </button>
           </form>
+          <div className="text-center mt-4">
+            <button
+              type="button"
+              className="text-sm text-blue-600 hover:underline"
+              onClick={handleResetPassword}
+            >
+              Mot de passe oublié?
+            </button>
+          </div>
         </div>
       </main>
     </div>

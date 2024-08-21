@@ -1,79 +1,63 @@
 import {
-  saveEnrollmentService,
-  updateEnrollmentService,
-  deleteEnrollmentService,
-  getEnrollmentService,
-  getAllEnrollmentService,
+  createEnrollment,
+  getAllEnrollments,
+  getEnrollmentById,
+  updateEnrollmentStatus,
+  deleteEnrollment,
 } from "../services/enrollment.service.js";
-import Success from "../utils/success.js";
-import AppError from "../utils/appError.js";
 
-export const saveEnrollmentController = async (req, res) => {
+export const createEnrollmentHandler = async (req, res) => {
   try {
-    const enrollment = await saveEnrollmentService(req.body);
-    res.status(201).json(Success(enrollment, "Successfully enrollment added."));
-  } catch (err) {
-    console.error("Error in saveEnrollmentController:", err);
-    if (err instanceof AppError) {
-      res.status(err.status).json({ message: err.message });
-    } else {
-      res.status(500).json({ message: "Internal server error." });
-    }
+    const enrollment = await createEnrollment(req.body);
+    res.status(201).json(enrollment);
+  } catch (error) {
+    console.error("Error creating enrollment:", error);
+    res.status(500).json({ error: error.message });
   }
 };
 
-export const updateEnrollmentController = async (req, res) => {
+export const getAllEnrollmentsHandler = async (req, res) => {
   try {
-    const enrollment = await updateEnrollmentService(req.params.id, req.body);
-    res.json(Success(enrollment, "Successfully enrollment updated."));
-  } catch (err) {
-    console.error("Error in updateEnrollmentController:", err);
-    if (err instanceof AppError) {
-      res.status(err.status).json({ message: err.message });
-    } else {
-      res.status(500).json({ message: "Internal server error." });
-    }
+    const { page, limit } = req.query;
+    const enrollmentsData = await getAllEnrollments(
+      parseInt(page),
+      parseInt(limit)
+    );
+    res.status(200).json(enrollmentsData);
+  } catch (error) {
+    console.error("Error fetching enrollments:", error);
+    res.status(500).json({ error: error.message });
   }
 };
 
-export const deleteEnrollmentController = async (req, res) => {
+export const getEnrollmentByIdHandler = async (req, res) => {
   try {
-    await deleteEnrollmentService(req.params.id);
-    res.json(Success({}, "Successfully enrollment deleted."));
-  } catch (err) {
-    console.error("Error in deleteEnrollmentController:", err);
-    if (err instanceof AppError) {
-      res.status(err.status).json({ message: err.message });
-    } else {
-      res.status(500).json({ message: "Internal server error." });
-    }
+    const enrollment = await getEnrollmentById(req.params.id);
+    res.status(200).json(enrollment);
+  } catch (error) {
+    console.error("Error fetching enrollment:", error);
+    res.status(404).json({ error: error.message });
   }
 };
 
-export const getEnrollmentController = async (req, res) => {
+export const updateEnrollmentStatusHandler = async (req, res) => {
   try {
-    const enrollment = await getEnrollmentService(req.params.id);
-    res.json(Success(enrollment, "Successfully fetched single enrollment."));
-  } catch (err) {
-    console.error("Error in getEnrollmentController:", err);
-    if (err instanceof AppError) {
-      res.status(err.status).json({ message: err.message });
-    } else {
-      res.status(500).json({ message: "Internal server error." });
-    }
+    const { id } = req.params;
+    const { status } = req.body;
+    const enrollment = await updateEnrollmentStatus({ id, status });
+    res.status(200).json(enrollment);
+  } catch (error) {
+    console.error("Error updating enrollment status:", error);
+    res.status(500).json({ error: error.message });
   }
 };
 
-export const getAllEnrollmentController = async (req, res) => {
+export const deleteEnrollmentHandler = async (req, res) => {
   try {
-    const enrollments = await getAllEnrollmentService();
-    res.json(Success(enrollments, "Successfully fetched all enrollments."));
-  } catch (err) {
-    console.error("Error in getAllEnrollmentController:", err);
-    if (err instanceof AppError) {
-      res.status(err.status).json({ message: err.message });
-    } else {
-      res.status(500).json({ message: "Internal server error." });
-    }
+    await deleteEnrollment(req.params.id);
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting enrollment:", error);
+    res.status(500).json({ error: error.message });
   }
 };
