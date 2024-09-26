@@ -1,13 +1,12 @@
-// controllers/staff.controller.js
-import {
+const {
   createStaff,
   getStaffById,
   updateStaff,
   deleteStaff,
   getAllStaff,
-} from "../services/staff.service.js";
+} = require("../services/staff.service.js");
 
-export const create = async (req, res) => {
+exports.create = async (req, res) => {
   try {
     const staff = await createStaff(req.body);
     res.status(201).json(staff);
@@ -16,7 +15,7 @@ export const create = async (req, res) => {
   }
 };
 
-export const getById = async (req, res) => {
+exports.getById = async (req, res) => {
   try {
     const staff = await getStaffById(req.params.id);
     if (!staff) {
@@ -28,7 +27,7 @@ export const getById = async (req, res) => {
   }
 };
 
-export const getAll = async (req, res) => {
+exports.getAll = async (req, res) => {
   try {
     const { page, limit } = req.query;
 
@@ -39,7 +38,7 @@ export const getAll = async (req, res) => {
   }
 };
 
-export const update = async (req, res) => {
+exports.update = async (req, res) => {
   try {
     const updatedStaff = await updateStaff(req.params.id, req.body);
     res.status(200).json(updatedStaff);
@@ -48,7 +47,7 @@ export const update = async (req, res) => {
   }
 };
 
-export const remove = async (req, res) => {
+exports.remove = async (req, res) => {
   try {
     await deleteStaff(req.params.id);
     res.status(204).send();

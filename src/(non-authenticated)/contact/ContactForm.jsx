@@ -185,7 +185,6 @@ const Contact = () => {
     }
 
     try {
-      console.log("Form data is valid. Sending form data:", formData);
 
       const response = await createContact(formData);
 

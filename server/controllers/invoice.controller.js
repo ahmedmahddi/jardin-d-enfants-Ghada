@@ -1,5 +1,5 @@
-import * as invoiceService from "../services/invoice.service.js";
-import logger from "../middleware/wlogger.middleware.js";
+const invoiceService = require("../services/invoice.service.js");
+const logger = require("../middleware/wlogger.middleware.js");
 
 const createInvoice = async (req, res) => {
   const { childId, parentId, amount } = req.body;
@@ -114,7 +114,7 @@ const deleteInvoice = async (req, res) => {
   }
 };
 
-export {
+module.exports = {
   createInvoice,
   markInvoiceAsPaid,
   generateReport,

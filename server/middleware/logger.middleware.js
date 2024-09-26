@@ -1,9 +1,9 @@
-import morgan from "morgan";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+const morgan = require("morgan");
+const fs = require("fs");
+const path = require("path");
+const { fileURLToPath } = require("url");
 
-const __filename = fileURLToPath(import.meta.url);
+const __filename = fileURLToPath(__filename);
 const __dirname = path.dirname(__filename);
 
 const accessLogStream = fs.createWriteStream(
@@ -13,4 +13,4 @@ const accessLogStream = fs.createWriteStream(
 
 const logger = morgan("combined", { stream: accessLogStream });
 
-export default logger;
+module.exports = logger;

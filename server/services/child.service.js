@@ -1,7 +1,6 @@
-// services/child.service.js
-import { Children, User, Invoice } from "../models/index.js";
-import { sendEmail } from "../utils/email.js";
-import bcrypt from "bcrypt";
+const { Children, User, Invoice } = require("../models/index.js");
+const { sendEmail } = require("../utils/email.js");
+const bcrypt = require("bcryptjs");
 
 const logError = (functionName, error) => {
   console.error(`Error in ${functionName}:`, error.message);
@@ -11,7 +10,7 @@ const logSuccess = (functionName, message) => {
   console.log(`Success in ${functionName}: ${message}`);
 };
 
-export const createChild = async childData => {
+const createChild = async childData => {
   const functionName = "createChild";
   console.log(`${functionName} - Received child data:`, childData);
 
@@ -73,7 +72,7 @@ export const createChild = async childData => {
   }
 };
 
-export const getChildById = async childId => {
+const getChildById = async childId => {
   const functionName = "getChildById";
   try {
     const child = await Children.findByPk(childId);
@@ -90,12 +89,15 @@ export const getChildById = async childId => {
   }
 };
 
-export const getAllChildren = async (page, limit) => {
+const getAllChildren = async (page, limit) => {
   const functionName = "getAllChildren";
   try {
     const offset = (page - 1) * limit;
     const { count: totalItems, rows: children } =
-      await Children.findAndCountAll({ offset, limit });
+      await Children.findAndCountAll({
+        offset,
+        limit,
+      });
     logSuccess(functionName, `Retrieved ${children.length} children`);
     return { children, totalItems, totalPages: Math.ceil(totalItems / limit) };
   } catch (error) {
@@ -104,7 +106,7 @@ export const getAllChildren = async (page, limit) => {
   }
 };
 
-export const updateChild = async (childId, updateData) => {
+const updateChild = async (childId, updateData) => {
   const functionName = "updateChild";
   console.log(`${functionName} - Received child data for update:`, updateData);
   console.log(`${functionName} - Received child ID:`, childId);
@@ -157,7 +159,7 @@ export const updateChild = async (childId, updateData) => {
   }
 };
 
-export const deleteChild = async childId => {
+const deleteChild = async childId => {
   const functionName = "deleteChild";
   console.log(`${functionName} - Received child ID:`, childId); // Additional logging
   try {
@@ -178,4 +180,12 @@ export const deleteChild = async childId => {
     logError(functionName, error);
     throw error;
   }
+};
+
+module.exports = {
+  createChild,
+  getChildById,
+  getAllChildren,
+  updateChild,
+  deleteChild,
 };

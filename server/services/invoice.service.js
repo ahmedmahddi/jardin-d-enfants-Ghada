@@ -1,17 +1,9 @@
-import { Invoice, Path, InvoiceHistory } from "../models/invoice.model.js";
-import Children from "../models/children.model.js";
-import User from "../models/user.model.js";
-import {
-  sendEmail,
-  getEmailTemplate,
-  generatePdf,
-  uploadToDrive,
-} from "../utils/email.js";
-import path, { dirname } from "path";
-import { fileURLToPath } from "url";
-import logger from "../middleware/wlogger.middleware.js";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const { Invoice, InvoiceHistory } = require("../models/invoice.model.js");
+const Children = require("../models/children.model.js");
+const User = require("../models/user.model.js");
+const { sendEmail, getEmailTemplate } = require("../utils/email.js");
+const path = require("path");
+const logger = require("../middleware/wlogger.middleware.js");
 
 const getUnpaidInvoicesSummary = async parentId => {
   const unpaidInvoices = await Invoice.findAll({
@@ -33,6 +25,7 @@ const getUnpaidInvoicesSummary = async parentId => {
 const createAndSendInvoice = async (childId, parentId, amount) => {
   logger.info("createAndSendInvoice: Start", { childId, parentId, amount });
 
+  // Check if required fields are provided
   if (!childId || !parentId || !amount) {
     logger.error("createAndSendInvoice: Missing fields", {
       childId,
@@ -42,6 +35,7 @@ const createAndSendInvoice = async (childId, parentId, amount) => {
     throw new Error("All fields are required");
   }
 
+  // Fetch child and parent details
   const child = await Children.findByPk(childId);
   const parentUser = await User.findByPk(parentId);
 
@@ -53,10 +47,12 @@ const createAndSendInvoice = async (childId, parentId, amount) => {
     throw new Error("Child or Parent not found");
   }
 
+  // Generate issue and due dates
   const issueDate = new Date();
   const dueDate = new Date();
   dueDate.setDate(issueDate.getDate() + 15);
 
+  // Create invoice record
   const invoice = await Invoice.create({
     childId,
     parentId,
@@ -67,13 +63,10 @@ const createAndSendInvoice = async (childId, parentId, amount) => {
     dueDate,
   });
 
+  // Get summary of unpaid invoices (if needed for the email)
   const { totalAmount, breakdown } = await getUnpaidInvoicesSummary(parentId);
 
-  const parentNameForFile = parentUser.name.replace(/ /g, "_");
-  const pdfPath = path.join(
-    __dirname,
-    `../invoices/invoice-${invoice.invoiceID}-${parentNameForFile}.pdf`
-  );
+  // Use the email template with the necessary replacements
   const htmlContent = getEmailTemplate("invoice", {
     invoiceID: invoice.invoiceID,
     parentName: parentUser.name,
@@ -81,74 +74,34 @@ const createAndSendInvoice = async (childId, parentId, amount) => {
     parentEmail: parentUser.email,
     issueDate: invoice.issueDate.toISOString().slice(0, 10),
     dueDate: invoice.dueDate.toISOString().slice(0, 10),
-    children: breakdown,
+    children: breakdown, // Include the child breakdown if applicable
     totalAmount,
   });
 
-  try {
-    await generatePdf(htmlContent, pdfPath);
-  } catch (error) {
-    logger.error("createAndSendInvoice: PDF generation failed", { error });
-    throw new Error("PDF generation failed");
-  }
-
-  let driveFile;
-  try {
-    driveFile = await uploadToDrive(
-      pdfPath,
-      `invoice-${invoice.invoiceID}-${parentNameForFile}.pdf`
-    );
-    console.log("Drive file data:", driveFile);
-  } catch (error) {
-    logger.error("createAndSendInvoice: Google Drive upload failed", { error });
-    throw new Error("Google Drive upload failed");
-  }
-
-  try {
-    const pathRecord = await Path.create({
-      type: "invoice",
-      path: driveFile.webViewLink,
-      fileId: driveFile.id,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-    console.log("Path record data:", pathRecord);
-    invoice.path = pathRecord.path;
-    invoice.fileId = pathRecord.fileId;
-    await invoice.save();
-  } catch (error) {
-    logger.error("createAndSendInvoice: Path saving failed", { error });
-    throw new Error("Path saving failed");
-  }
-
+  // Prepare email message
   const emailMessage = `
     <p>Bonjour ${parentUser.name},</p>
     <p>Votre facture est maintenant disponible.</p>
-    <p>Veuillez trouver en pièce jointe votre facture.</p>
     <p>Merci pour votre confiance!</p>
   `;
 
   const emailHtml = `
     ${emailMessage}
-    <br>
-    <a href="${driveFile.webViewLink}">Télécharger votre facture</a>
+    <br><br>
+    ${htmlContent}
   `;
 
+  // Try sending the email using Nodemailer
   try {
     await sendEmail({
       to: invoice.parentEmail,
-      subject: "Votre Facture",
-      html: emailHtml,
+      subject: `Votre Facture - ${invoice.invoiceID}`,
+      html: emailHtml, // Send the generated HTML content
       attachments: [
-        {
-          filename: `invoice-${invoice.invoiceID}-${parentUser.name.replace(/ /g, "_")}.pdf`,
-          path: pdfPath,
-          cid: "invoice",
-        },
         {
           filename: "logo-JDG.png",
           path: path.join(__dirname, "../assets/logo-JDG.png"),
-          cid: "logo@jdg",
+          cid: "logo@jdg", // Reference logo in the HTML template if needed
         },
       ],
     });
@@ -161,7 +114,8 @@ const createAndSendInvoice = async (childId, parentId, amount) => {
     "createAndSendInvoice: Invoice created and email sent successfully",
     { invoice }
   );
-  return invoice;
+
+  return invoice; // Return the created invoice
 };
 
 const markInvoiceAsPaid = async invoiceID => {
@@ -295,43 +249,51 @@ const markInvoiceAsPaid = async invoiceID => {
 const generateMonthlyReport = async () => {
   logger.info("generateMonthlyReport: Start");
 
-  const totalInvoices = await Invoice.count();
-  logger.info("generateMonthlyReport: Total invoices counted", {
-    totalInvoices,
-  });
+  try {
+    const [
+      totalInvoices,
+      paidInvoices,
+      unpaidInvoices,
+      totalPaidAmount,
+      totalOutstandingAmount,
+    ] = await Promise.all([
+      Invoice.count(),
+      Invoice.count({ where: { status: "paid" } }),
+      Invoice.count({ where: { status: "unpaid" } }),
+      Invoice.sum("amount", { where: { status: "paid" } }) || 0,
+      Invoice.sum("amount", { where: { status: "unpaid" } }) || 0,
+    ]);
 
-  const paidInvoices = await Invoice.count({ where: { status: "paid" } });
-  logger.info("generateMonthlyReport: Paid invoices counted", { paidInvoices });
+    logger.info("generateMonthlyReport: Total invoices counted", {
+      totalInvoices,
+    });
+    logger.info("generateMonthlyReport: Paid invoices counted", {
+      paidInvoices,
+    });
+    logger.info("generateMonthlyReport: Unpaid invoices counted", {
+      unpaidInvoices,
+    });
+    logger.info("generateMonthlyReport: Total paid amount calculated", {
+      totalPaidAmount,
+    });
+    logger.info("generateMonthlyReport: Total outstanding amount calculated", {
+      totalOutstandingAmount,
+    });
 
-  const unpaidInvoices = await Invoice.count({ where: { status: "unpaid" } });
-  logger.info("generateMonthlyReport: Unpaid invoices counted", {
-    unpaidInvoices,
-  });
+    const report = {
+      totalInvoices,
+      paidInvoices,
+      unpaidInvoices,
+      totalPaidAmount: totalPaidAmount || 0,
+      totalOutstandingAmount: totalOutstandingAmount || 0,
+    };
 
-  const totalPaidAmount = await Invoice.sum("amount", {
-    where: { status: "paid" },
-  });
-  logger.info("generateMonthlyReport: Total paid amount calculated", {
-    totalPaidAmount,
-  });
-
-  const totalOutstandingAmount = await Invoice.sum("amount", {
-    where: { status: "unpaid" },
-  });
-  logger.info("generateMonthlyReport: Total outstanding amount calculated", {
-    totalOutstandingAmount,
-  });
-
-  const report = {
-    totalInvoices,
-    paidInvoices,
-    unpaidInvoices,
-    totalPaidAmount,
-    totalOutstandingAmount,
-  };
-
-  logger.info("generateMonthlyReport: Report generated", report);
-  return report;
+    logger.info("generateMonthlyReport: Report generated", report);
+    return report;
+  } catch (error) {
+    logger.error("generateMonthlyReport: Failed to generate report", { error });
+    throw new Error("Failed to generate monthly report");
+  }
 };
 
 const getAllInvoices = async (page, limit) => {
@@ -440,7 +402,7 @@ const deleteInvoice = async invoiceID => {
   return invoice;
 };
 
-export {
+module.exports = {
   createAndSendInvoice,
   markInvoiceAsPaid,
   generateMonthlyReport,

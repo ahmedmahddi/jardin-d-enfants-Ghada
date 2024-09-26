@@ -1,10 +1,10 @@
-import { Router } from "express";
-import {
+const { Router } = require("express");
+const {
   create,
   getById,
   update,
   remove,
-} from "../controllers/user.controller.js";
+} = require("../controllers/user.controller.js");
 
 const userRouter = Router();
 
@@ -13,4 +13,4 @@ userRouter.get("/:id", getById);
 userRouter.put("/:id", update);
 userRouter.delete("/:id", remove);
 
-export default userRouter;
+module.exports = userRouter;

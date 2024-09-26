@@ -1,8 +1,26 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
-import axiosInstance from "../utils/axiosInstance.js";
+import axiosInstance, { getCsrfToken } from "../utils/axiosInstance.js";
 
 export const AuthContext = createContext();
+
+// Utility function to manage token
+const tokenManager = {
+  getToken: () => {
+    return localStorage.getItem("token") || sessionStorage.getItem("token");
+  },
+  setToken: (token, rememberMe) => {
+    if (rememberMe) {
+      localStorage.setItem("token", token);
+    } else {
+      sessionStorage.setItem("token", token);
+    }
+  },
+  removeToken: () => {
+    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
+  },
+};
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -10,11 +28,11 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token =
-      localStorage.getItem("token") || sessionStorage.getItem("token");
+    const token = tokenManager.getToken();
     if (token) {
       verifyToken(token);
     } else {
+      console.warn("No token found on initial load.");
       setLoading(false);
     }
   }, []);
@@ -27,6 +45,7 @@ export const AuthProvider = ({ children }) => {
         },
       });
       if (response.status === 200) {
+        console.log("Token verified successfully.");
         setIsAuthenticated(true);
         setUser(
           JSON.parse(
@@ -34,9 +53,11 @@ export const AuthProvider = ({ children }) => {
           )
         );
       } else {
+        console.warn("Token verification failed.");
         logout();
       }
     } catch (error) {
+      console.error("Error verifying token:", error);
       logout();
     }
     setLoading(false);
@@ -44,62 +65,31 @@ export const AuthProvider = ({ children }) => {
 
   const login = async credentials => {
     try {
-      const response = await axiosInstance.post("auth/login", credentials);
+      const csrfToken = await getCsrfToken();
+      const response = await axiosInstance.post("auth/login", credentials, {
+        headers: {
+          "CSRF-Token": csrfToken,
+        },
+      });
+
       if (response.status === 200 && response.data) {
         setIsAuthenticated(true);
         setUser(response.data.user);
-        if (credentials.rememberMe) {
-          localStorage.setItem("token", response.data.token);
-          localStorage.setItem("user", JSON.stringify(response.data.user));
-        } else {
-          sessionStorage.setItem("token", response.data.token);
-          sessionStorage.setItem("user", JSON.stringify(response.data.user));
-        }
+        tokenManager.setToken(response.data.token, credentials.rememberMe);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
         return { success: true };
       } else {
+        console.warn("Login failed:", response.data.message);
         return {
           success: false,
           message: response.data.message || "Login failed",
         };
       }
     } catch (err) {
-      const errorMessage = err.response
-        ? err.response.data.message
-        : "Login failed";
-      return { success: false, message: errorMessage };
-    }
-  };
-
-  const requestPasswordReset = async email => {
-    try {
-      const response = await axiosInstance.post(
-        "/auth/request-password-reset",
-        { email }
-      );
-      return response.data;
-    } catch (error) {
+      console.error("Login error:", err.response?.data || err.message);
       return {
         success: false,
-        message: error.response
-          ? error.response.data.message
-          : "Failed to send password reset email",
-      };
-    }
-  };
-
-  const resetPassword = async (token, newPassword) => {
-    try {
-      const response = await axiosInstance.post("/auth/reset-password", {
-        token,
-        newPassword,
-      });
-      return response.data;
-    } catch (error) {
-      return {
-        success: false,
-        message: error.response
-          ? error.response.data.message
-          : "Failed to reset password",
+        message: err.response?.data.message || "Login failed",
       };
     }
   };
@@ -107,10 +97,8 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setIsAuthenticated(false);
     setUser(null);
-    localStorage.removeItem("token");
+    tokenManager.removeToken();
     localStorage.removeItem("user");
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("user");
   };
 
   return (
@@ -121,8 +109,6 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         loading,
-        requestPasswordReset,
-        resetPassword,
       }}
     >
       {children}

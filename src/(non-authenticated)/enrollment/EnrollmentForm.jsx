@@ -154,7 +154,6 @@ const EnrollmentForm = () => {
     setErrorMessage("");
     try {
       const response = await axiosInstance.post("enrollments/", formData);
-      console.log("Form submitted successfully:", response.data);
       setFormData({
         childName: "",
         birthdate: "",
@@ -295,11 +294,11 @@ const EnrollmentForm = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <InputField
-              label="Nom du Parent"
+              label="Nom et prenom du Parent"
               name="parentName"
               value={formData.parentName}
               onChange={handleChange}
-              placeholder="اسم الوالد"
+              placeholder="إسم و لقب الولي"
               required
             />
             <InputField
@@ -308,7 +307,7 @@ const EnrollmentForm = () => {
               type="tel"
               value={formData.parentPhone}
               onChange={handleChange}
-              placeholder="رقم هاتف الوالد"
+              placeholder="رقم هاتف الولي"
               required
             />
             <InputField
@@ -317,7 +316,7 @@ const EnrollmentForm = () => {
               type="email"
               value={formData.parentEmail}
               onChange={handleChange}
-              placeholder="عنوان البريد الإلكتروني للوالد"
+              placeholder="عنوان البريد الإلكتروني الولي"
               required
             />
             <InputField
@@ -325,7 +324,7 @@ const EnrollmentForm = () => {
               name="parentWork"
               value={formData.parentWork}
               onChange={handleChange}
-              placeholder="مكان عمل الوالد"
+              placeholder="مكان عمل الولي"
               required
             />
           </div>
@@ -341,7 +340,7 @@ const EnrollmentForm = () => {
               name="secondPersonName"
               value={formData.secondPersonName}
               onChange={handleChange}
-              placeholder="الاسم"
+              placeholder="إسم و لقب"
               required
             />
             <InputField
@@ -370,7 +369,7 @@ const EnrollmentForm = () => {
                 Médicaments actuels, allergies aux médicaments, allergies
                 alimentaires ou problèmes de santé chroniques{" "}
                 <span className="float-right text-gray-500">
-                  يرجى سرد العناصر التالية: المضاعفات الطبية، الأدوية الحالية،
+                  يرجى إدخال العناصر التالية: المضاعفات الطبية، الأدوية الحالية،
                   الحساسية تجاه الأدوية، الحساسية الغذائية أو المشكلات الصحية
                   المزمنة
                 </span>

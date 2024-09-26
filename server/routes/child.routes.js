@@ -1,13 +1,13 @@
-import { Router } from "express";
-import {
+const express = require("express");
+const {
   create,
   getById,
   update,
   remove,
   getAll,
-} from "../controllers/child.controller.js";
+} = require("../controllers/child.controller.js");
 
-const childRouter = Router();
+const childRouter = express.Router();
 
 childRouter.post("/", create);
 childRouter.get("/:id", getById);
@@ -15,4 +15,4 @@ childRouter.get("/", getAll);
 childRouter.put("/:id", update);
 childRouter.delete("/:id", remove);
 
-export default childRouter;
+module.exports = childRouter;

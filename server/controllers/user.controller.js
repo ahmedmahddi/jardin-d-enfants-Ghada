@@ -1,11 +1,11 @@
-import {
+const {
   createUser,
   getUserById,
   updateUser,
   deleteUser,
-} from "../services/user.service.js";
+} = require("../services/user.service.js");
 
-export const create = async (req, res) => {
+exports.create = async (req, res) => {
   try {
     const user = await createUser(req.body);
     res.status(201).json(user);
@@ -14,7 +14,7 @@ export const create = async (req, res) => {
   }
 };
 
-export const getById = async (req, res) => {
+exports.getById = async (req, res) => {
   try {
     const user = await getUserById(req.params.id);
     if (!user) {
@@ -26,7 +26,7 @@ export const getById = async (req, res) => {
   }
 };
 
-export const update = async (req, res) => {
+exports.update = async (req, res) => {
   try {
     const user = await updateUser(req.params.id, req.body);
     res.status(200).json(user);
@@ -35,7 +35,7 @@ export const update = async (req, res) => {
   }
 };
 
-export const remove = async (req, res) => {
+exports.remove = async (req, res) => {
   try {
     await deleteUser(req.params.id);
     res.status(204).send();

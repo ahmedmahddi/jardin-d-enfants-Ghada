@@ -1,19 +1,22 @@
-import ContactUs from "../models/contactUs.model.js";
-import nodemailer from "nodemailer";
-import logger from "../middleware/wlogger.middleware.js";
-import dotenv from "dotenv";
+const ContactUs = require("../models/contactUs.model.js");
+const nodemailer = require("nodemailer");
+const logger = require("../middleware/wlogger.middleware.js");
+const dotenv = require("dotenv");
 dotenv.config();
 
-export const createContact = async contactData => {
+const createContact = async contactData => {
   try {
     const contact = await ContactUs.create(contactData);
     logger.info(`Contact created with id: ${contact.id}`);
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: true,
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        pass: process.env.EMAIL_PASS, // App password for Gmail
       },
     });
 
@@ -65,3 +68,5 @@ export const createContact = async contactData => {
     );
   }
 };
+
+module.exports = { createContact };

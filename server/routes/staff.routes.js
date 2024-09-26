@@ -1,12 +1,11 @@
-// routes/staff.routes.js
-import { Router } from "express";
-import {
+const { Router } = require("express");
+const {
   create,
   getById,
   getAll,
   update,
   remove,
-} from "../controllers/staff.controller.js";
+} = require("../controllers/staff.controller.js");
 
 const staffRouter = Router();
 
@@ -16,4 +15,4 @@ staffRouter.get("/", getAll); // Added getAll route
 staffRouter.put("/:id", update);
 staffRouter.delete("/:id", remove);
 
-export default staffRouter;
+module.exports = staffRouter;

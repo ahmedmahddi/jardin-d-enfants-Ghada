@@ -1,4 +1,4 @@
-import logger from "./logger.middleware.js";
+const logger = require("./logger.middleware.js");
 
 const errorHandler = (err, req, res, next) => {
   logger("combined")(err, req, res, error => {
@@ -9,4 +9,4 @@ const errorHandler = (err, req, res, next) => {
   res.status(status).json({ error: message });
 };
 
-export default errorHandler;
+module.exports = errorHandler;

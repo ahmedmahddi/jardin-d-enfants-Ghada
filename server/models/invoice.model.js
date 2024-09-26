@@ -1,7 +1,7 @@
-import { DataTypes, Model } from "sequelize";
-import sequelize from "../config/db.js";
-import Children from "./children.model.js";
-import User from "./user.model.js";
+const { DataTypes, Model } = require("sequelize");
+const sequelize = require("../config/db.js");
+const Children = require("./children.model.js");
+const User = require("./user.model.js");
 
 class Invoice extends Model {}
 
@@ -156,4 +156,4 @@ InvoiceHistory.init(
   }
 );
 
-export { Invoice, Path, InvoiceHistory };
+module.exports = { Invoice, Path, InvoiceHistory };

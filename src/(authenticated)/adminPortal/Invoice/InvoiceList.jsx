@@ -145,7 +145,7 @@ const ListeFactures = () => {
             >
               <td className="px-4 py-2">{invoice.childName}</td>
               <td className="px-4 py-2">{invoice.parentEmail}</td>
-              <td className="px-4 py-2">${invoice.amount}</td>
+              <td className="px-4 py-2">{invoice.amount} TND</td>
               <td className="px-4 py-2">{invoice.status}</td>
               <td className="px-4 py-2 flex justify-around">
                 <button

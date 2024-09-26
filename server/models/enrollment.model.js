@@ -1,5 +1,5 @@
-import { DataTypes } from "sequelize";
-import sequelize from "../config/db.js";
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/db.js");
 
 const Enrollment = sequelize.define(
   "Enrollment",
@@ -38,7 +38,7 @@ const Enrollment = sequelize.define(
       allowNull: false,
     },
     days: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.JSON, // Replaced ARRAY with JSON for MySQL compatibility
       allowNull: false,
     },
     parentName: {
@@ -80,4 +80,4 @@ const Enrollment = sequelize.define(
   }
 );
 
-export default Enrollment;
+module.exports = Enrollment;

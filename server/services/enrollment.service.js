@@ -1,7 +1,7 @@
-import { Enrollment, User, Children } from "../models/index.js";
-import { sendEmail } from "../utils/email.js";
-import bcrypt from "bcryptjs";
-import sequelize from "../config/db.js";
+const { Enrollment, User, Children } = require("../models/index.js");
+const { sendEmail } = require("../utils/email.js");
+const bcrypt = require("bcryptjs");
+const sequelize = require("../config/db.js");
 
 const logError = (functionName, error) => {
   console.error(`Error in ${functionName}:`, error.message);
@@ -11,7 +11,7 @@ const logSuccess = (functionName, message) => {
   console.log(`Success in ${functionName}: ${message}`);
 };
 
-export const createEnrollment = async enrollmentData => {
+const createEnrollment = async enrollmentData => {
   const functionName = "createEnrollment";
   console.log(`${functionName} - Received enrollment data:`, enrollmentData);
 
@@ -28,7 +28,7 @@ export const createEnrollment = async enrollmentData => {
   }
 };
 
-export const updateEnrollmentStatus = async ({ id, status }) => {
+const updateEnrollmentStatus = async ({ id, status }) => {
   const functionName = "updateEnrollmentStatus";
   console.log(`${functionName} - Received enrollment ID: ${id}`);
   console.log(`${functionName} - Received status: ${status}`);
@@ -67,20 +67,22 @@ export const updateEnrollmentStatus = async ({ id, status }) => {
 
         await sendEmail({
           to: enrollment.parentEmail,
-          subject: "Votre inscription est approuvée",
+          subject: "Bienvenue à Jardin d'Enfant Ghada",
           message: `Cher/Chère ${enrollment.parentName},
 
-Félicitations ! Votre enfant ${enrollment.childName} a été inscrit avec succès à Jardin d'enfant Ghada. Nous sommes ravis de vous accueillir parmi nous.
+Félicitations ! Votre enfant ${enrollment.childName} a été inscrit avec succès à Jardin d'Enfant Ghada. Nous sommes ravis de vous accueillir parmi nous.
 
 Voici vos identifiants pour vous connecter :
 
 Email : ${enrollment.parentEmail}
 Mot de passe : ${password}
 
-Merci de votre confiance.
+Nous tenons également à vous informer que notre interface dédiée aux parents sera bientôt disponible. Celle-ci vous permettra de suivre facilement les activités et le développement de votre enfant au sein de notre jardin d'enfants.
+
+Encore une fois, bienvenue dans notre grande famille !
 
 Cordialement,
-L'équipe de Jardin d'enfant Ghada`,
+L'équipe de Jardin d'Enfant Ghada`,
         });
         logSuccess(
           functionName,
@@ -89,15 +91,17 @@ L'équipe de Jardin d'enfant Ghada`,
       } else {
         await sendEmail({
           to: enrollment.parentEmail,
-          subject: "Votre inscription est approuvée",
+          subject: "Bienvenue à Jardin d'Enfant Ghada",
           message: `Cher/Chère ${enrollment.parentName},
 
-Félicitations ! Votre enfant ${enrollment.childName} a été inscrit avec succès à Jardin d'enfant Ghada. Nous sommes ravis de vous accueillir parmi nous.
+Félicitations ! Votre enfant ${enrollment.childName} a été inscrit avec succès à Jardin d'Enfant Ghada. Nous sommes ravis de vous accueillir parmi nous.
 
-Merci de votre confiance.
+Nous tenons également à vous informer que notre interface dédiée aux parents sera bientôt disponible. Celle-ci vous permettra de suivre facilement les activités et le développement de votre enfant au sein de notre jardin d'enfants.
+
+Encore une fois, bienvenue dans notre grande famille !
 
 Cordialement,
-L'équipe de Jardin d'enfant Ghada`,
+L'équipe de Jardin d'Enfant Ghada`,
         });
         logSuccess(
           functionName,
@@ -149,7 +153,7 @@ function generateRandomPassword() {
   return Math.random().toString(36).slice(-8);
 }
 
-export const getAllEnrollments = async (page, limit) => {
+const getAllEnrollments = async (page, limit) => {
   const functionName = "getAllEnrollments";
   try {
     const offset = (page - 1) * limit;
@@ -170,7 +174,7 @@ export const getAllEnrollments = async (page, limit) => {
   }
 };
 
-export const getEnrollmentById = async id => {
+const getEnrollmentById = async id => {
   const functionName = "getEnrollmentById";
   try {
     const enrollment = await Enrollment.findByPk(id);
@@ -187,7 +191,7 @@ export const getEnrollmentById = async id => {
   }
 };
 
-export const deleteEnrollment = async id => {
+const deleteEnrollment = async id => {
   const functionName = "deleteEnrollment";
   console.log(`${functionName} - Received enrollment ID: ${id}`);
 
@@ -209,4 +213,12 @@ export const deleteEnrollment = async id => {
     logError(functionName, error);
     throw error;
   }
+};
+
+module.exports = {
+  createEnrollment,
+  updateEnrollmentStatus,
+  getAllEnrollments,
+  getEnrollmentById,
+  deleteEnrollment,
 };

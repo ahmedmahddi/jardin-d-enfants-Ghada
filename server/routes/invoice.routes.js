@@ -1,15 +1,15 @@
-import { Router } from "express";
-import * as invoiceController from "../controllers/invoice.controller.js";
+const express = require('express');
+const invoiceController = require('../controllers/invoice.controller.js');
 
-const invoiceRouter = Router();
+const invoiceRouter = express.Router();
 
-invoiceRouter.post("/", invoiceController.createInvoice);
-invoiceRouter.put("/:invoiceID/pay", invoiceController.markInvoiceAsPaid);
-invoiceRouter.get("/report", invoiceController.generateReport);
+invoiceRouter.post('/', invoiceController.createInvoice);
+invoiceRouter.put('/:invoiceID/pay', invoiceController.markInvoiceAsPaid);
+invoiceRouter.get('/report', invoiceController.generateReport);
 
-invoiceRouter.get("/all", invoiceController.getAllInvoices);
-invoiceRouter.get("/:invoiceID", invoiceController.getInvoiceById);
-invoiceRouter.put("/:invoiceID", invoiceController.updateInvoice);
-invoiceRouter.delete("/:invoiceID", invoiceController.deleteInvoice);
+invoiceRouter.get('/all', invoiceController.getAllInvoices);
+invoiceRouter.get('/:invoiceID', invoiceController.getInvoiceById);
+invoiceRouter.put('/:invoiceID', invoiceController.updateInvoice);
+invoiceRouter.delete('/:invoiceID', invoiceController.deleteInvoice);
 
-export default invoiceRouter;
+module.exports = invoiceRouter;

@@ -14,6 +14,7 @@ import NewPassword from "./(non-authenticated)/login/newPassword";
 import ConditionPage from "./(non-authenticated)/conditions/condtion_genrale";
 import PrivacyPolicy from "./(non-authenticated)/conditions/policy";
 import Licences from "./(non-authenticated)/conditions/licence";
+
 // Import authenticated pages
 import AdminPortal from "./(authenticated)/adminPortal/AdminPortal";
 

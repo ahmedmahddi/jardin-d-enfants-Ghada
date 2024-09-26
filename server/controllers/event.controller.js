@@ -1,7 +1,5 @@
-// File path: src/controllers/event.controller.js
-
-import * as EventService from "../services/event.service.js";
-import logger from "../middleware/wlogger.middleware.js";
+const EventService = require("../services/event.service.js");
+const logger = require("../middleware/wlogger.middleware.js");
 
 const createEvent = async (req, res) => {
   logger.info("EventController: Create event request received", {
@@ -72,4 +70,10 @@ const deleteEvent = async (req, res) => {
   }
 };
 
-export { createEvent, getAllEvents, getEventById, updateEvent, deleteEvent };
+module.exports = {
+  createEvent,
+  getAllEvents,
+  getEventById,
+  updateEvent,
+  deleteEvent,
+};

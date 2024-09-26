@@ -1,9 +1,9 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { User } from "../models/index.js";
-import { sendEmail } from "../utils/email.js"; // Import a utility to send emails
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { User } = require("../models/index.js");
+const { sendEmail } = require("../utils/email.js"); // Import a utility to send emails
 
-export const loginUser = async (email, password, role) => {
+const loginUser = async (email, password, role) => {
   try {
     const user = await User.findOne({ where: { email, role } });
 
@@ -36,7 +36,7 @@ export const loginUser = async (email, password, role) => {
   }
 };
 
-export const sendPasswordResetEmail = async (email) => {
+const sendPasswordResetEmail = async email => {
   try {
     const user = await User.findOne({ where: { email } });
 
@@ -45,11 +45,9 @@ export const sendPasswordResetEmail = async (email) => {
       throw new Error("User not found");
     }
 
-    const resetToken = jwt.sign(
-      { id: user.id },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
+    const resetToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
     const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
@@ -66,7 +64,7 @@ export const sendPasswordResetEmail = async (email) => {
   }
 };
 
-export const resetPassword = async (token, newPassword) => {
+const resetPassword = async (token, newPassword) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findByPk(decoded.id);
@@ -85,4 +83,10 @@ export const resetPassword = async (token, newPassword) => {
     console.error(`Password reset failed: ${error.message}`);
     throw error;
   }
+};
+
+module.exports = {
+  loginUser,
+  sendPasswordResetEmail,
+  resetPassword,
 };

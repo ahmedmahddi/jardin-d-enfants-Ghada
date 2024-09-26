@@ -1,12 +1,12 @@
-import {
+const {
   createEnrollment,
   getAllEnrollments,
   getEnrollmentById,
   updateEnrollmentStatus,
   deleteEnrollment,
-} from "../services/enrollment.service.js";
+} = require("../services/enrollment.service.js");
 
-export const createEnrollmentHandler = async (req, res) => {
+const createEnrollmentHandler = async (req, res) => {
   try {
     const enrollment = await createEnrollment(req.body);
     res.status(201).json(enrollment);
@@ -16,7 +16,7 @@ export const createEnrollmentHandler = async (req, res) => {
   }
 };
 
-export const getAllEnrollmentsHandler = async (req, res) => {
+const getAllEnrollmentsHandler = async (req, res) => {
   try {
     const { page, limit } = req.query;
     const enrollmentsData = await getAllEnrollments(
@@ -30,7 +30,7 @@ export const getAllEnrollmentsHandler = async (req, res) => {
   }
 };
 
-export const getEnrollmentByIdHandler = async (req, res) => {
+const getEnrollmentByIdHandler = async (req, res) => {
   try {
     const enrollment = await getEnrollmentById(req.params.id);
     res.status(200).json(enrollment);
@@ -40,7 +40,7 @@ export const getEnrollmentByIdHandler = async (req, res) => {
   }
 };
 
-export const updateEnrollmentStatusHandler = async (req, res) => {
+const updateEnrollmentStatusHandler = async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
@@ -52,7 +52,7 @@ export const updateEnrollmentStatusHandler = async (req, res) => {
   }
 };
 
-export const deleteEnrollmentHandler = async (req, res) => {
+const deleteEnrollmentHandler = async (req, res) => {
   try {
     await deleteEnrollment(req.params.id);
     res.status(204).send();
@@ -60,4 +60,12 @@ export const deleteEnrollmentHandler = async (req, res) => {
     console.error("Error deleting enrollment:", error);
     res.status(500).json({ error: error.message });
   }
+};
+
+module.exports = {
+  createEnrollmentHandler,
+  getAllEnrollmentsHandler,
+  getEnrollmentByIdHandler,
+  updateEnrollmentStatusHandler,
+  deleteEnrollmentHandler,
 };

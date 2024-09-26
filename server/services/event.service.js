@@ -1,12 +1,9 @@
-// File path: src/services/event.service.js
+const Event = require("../models/event.model.js");
+const User = require("../models/user.model.js");
+const logger = require("../middleware/wlogger.middleware.js");
+const { google } = require("googleapis");
+const { getOAuth2Client } = require("../utils/auth.js");
 
-import Event from "../models/event.model.js";
-import User from "../models/user.model.js";
-import logger from "../middleware/wlogger.middleware.js";
-import { google } from "googleapis";
-import getOAuth2Client from "../utils/auth.js";
-import { sendEmail } from "../utils/email.js";
-import cron from "node-cron";
 
 let calendar;
 
@@ -20,7 +17,12 @@ const initializeCalendar = async () => {
   }
 };
 
-initializeCalendar();
+// Ensure the calendar is initialized before making requests
+const ensureCalendarInitialized = async () => {
+  if (!calendar) {
+    await initializeCalendar();
+  }
+};
 
 const createEvent = async data => {
   logger.info("createEvent: Start", { data });
@@ -31,18 +33,24 @@ const createEvent = async data => {
   }
 
   try {
+    await ensureCalendarInitialized();
+
     const users = await User.findAll();
     const attendees = users.map(user => ({ email: user.email }));
+
+    // Convert date strings to ISO 8601 format if necessary
+    const startDate = new Date(data.startDate).toISOString();
+    const endDate = new Date(data.endDate).toISOString();
 
     const googleEvent = {
       summary: data.title,
       description: data.description,
       start: {
-        dateTime: data.startDate,
+        dateTime: startDate,
         timeZone: "Africa/Tunis",
       },
       end: {
-        dateTime: data.endDate,
+        dateTime: endDate,
         timeZone: "Africa/Tunis",
       },
       attendees: attendees,
@@ -57,21 +65,6 @@ const createEvent = async data => {
     const event = await Event.create({
       ...data,
       googleCalendarEventId: response.data.id,
-    });
-
-    const reminderDate = new Date(data.startDate);
-    reminderDate.setDate(reminderDate.getDate() - 2);
-
-    const cronPattern = `${reminderDate.getMinutes()} ${reminderDate.getHours()} ${reminderDate.getDate()} ${reminderDate.getMonth() + 1} *`;
-
-    cron.schedule(cronPattern, () => {
-      users.forEach(user => {
-        sendEmail({
-          to: user.email,
-          subject: `Reminder: Upcoming Event ${data.title}`,
-          html: `Don't forget about the upcoming event: ${data.title} on ${new Date(data.startDate).toLocaleString("en-GB", { timeZone: "Africa/Tunis", hour12: false })}`,
-        });
-      });
     });
 
     logger.info("createEvent: Event created and notifications sent", { event });
@@ -118,6 +111,8 @@ const updateEvent = async (id, data) => {
   logger.info("updateEvent: Start", { id, data });
 
   try {
+    await ensureCalendarInitialized(); 
+
     const event = await getEventById(id);
     await event.update(data);
 
@@ -156,6 +151,8 @@ const deleteEvent = async id => {
   logger.info("deleteEvent: Start", { id });
 
   try {
+    await ensureCalendarInitialized(); // Ensure the calendar client is ready
+
     const event = await getEventById(id);
 
     await calendar.events.delete({
@@ -177,4 +174,10 @@ const deleteEvent = async id => {
   }
 };
 
-export { createEvent, getAllEvents, getEventById, updateEvent, deleteEvent };
+module.exports = {
+  createEvent,
+  getAllEvents,
+  getEventById,
+  updateEvent,
+  deleteEvent,
+};

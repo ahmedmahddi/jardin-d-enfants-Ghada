@@ -1,6 +1,6 @@
-import cron from "node-cron";
-import { createAndSendInvoice } from "../services/invoice.service.js";
-import { getAllChildren } from "../services/child.service.js";
+const cron = require("node-cron");
+const { createAndSendInvoice } = require("../services/invoice.service.js");
+const { getAllChildren } = require("../services/child.service.js");
 
 cron.schedule("0 0 1 * *", async () => {
   const children = await getAllChildren();

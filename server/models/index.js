@@ -1,10 +1,10 @@
-import User from "./user.model.js";
-import Children from "./children.model.js";
-import Staff from "./staff.model.js";
-import Enrollment from "./enrollment.model.js";
-import Event from "./event.model.js";
-import contactUs from "./contactUs.model.js";
-import { Invoice, InvoiceHistory, Path } from "./invoice.model.js";
+const User = require("./user.model.js");
+const Children = require("./children.model.js");
+const Staff = require("./staff.model.js");
+const Enrollment = require("./enrollment.model.js");
+const Event = require("./event.model.js");
+const contactUs = require("./contactUs.model.js");
+const { Invoice, InvoiceHistory, Path } = require("./invoice.model.js");
 
 // Associations
 
@@ -26,7 +26,7 @@ User.hasMany(InvoiceHistory, { foreignKey: "parentId" });
 InvoiceHistory.belongsTo(Children, { foreignKey: "childId", as: "child" });
 Children.hasMany(InvoiceHistory, { foreignKey: "childId" });
 
-export {
+module.exports = {
   User,
   Children,
   Staff,

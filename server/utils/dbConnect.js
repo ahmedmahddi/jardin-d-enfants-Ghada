@@ -1,11 +1,10 @@
-import sequelize from "../config/db.js";
-import "../models/index.js";
+const sequelize = require("../config/db.js");
+require("../models/index.js");
 
 const connect = async () => {
   try {
     await sequelize.authenticate();
-    console.log("Connection to PostgreSQL has been established successfully.");
-
+    console.log("Connection to MySQL has been established successfully.");
     await sequelize.sync();
     console.log("All models were synchronized successfully.");
   } catch (error) {
@@ -13,4 +12,4 @@ const connect = async () => {
   }
 };
 
-export { connect };
+module.exports = { connect };

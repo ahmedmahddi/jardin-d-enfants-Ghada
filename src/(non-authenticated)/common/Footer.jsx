@@ -6,7 +6,7 @@ import {
   faPhone,
   faCopyright,
 } from "@fortawesome/free-solid-svg-icons";
-import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons";
+import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 
 const Footer = () => {
   return (
@@ -149,20 +149,12 @@ const Footer = () => {
       {/* Barre Inférieure : Icônes des Réseaux Sociaux */}
       <div className="container mx-auto flex justify-center space-x-4">
         <a
-          href="https://facebook.com"
+          href="https://www.facebook.com/profile.php?id=61566166073454"
           target="_blank"
           rel="noopener noreferrer"
           className="hover:text-orange transition-transform duration-200 ease-in-out transform hover:scale-110"
         >
           <FontAwesomeIcon icon={faFacebook} className="w-6 h-6" />
-        </a>
-        <a
-          href="https://instagram.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-orange transition-transform duration-200 ease-in-out transform hover:scale-110"
-        >
-          <FontAwesomeIcon icon={faInstagram} className="w-6 h-6" />
         </a>
       </div>
 
@@ -179,9 +171,8 @@ const Footer = () => {
             href="https://www.linkedin.com/in/ahmed-mahdi-62b29614a"
             className="text-orange"
           >
-            The Playground
+            Ahmed Mahdi.
           </a>
-          .
         </p>
       </div>
     </footer>

@@ -1,8 +1,7 @@
-// services/staff.service.js
-import { Staff, User } from "../models/index.js";
-import { sendEmail } from "../utils/email.js";
-import bcrypt from "bcrypt";
-import sequelize from "../config/db.js"; // Import sequelize to manage transactions
+const { Staff, User } = require("../models/index.js");
+const { sendEmail } = require("../utils/email.js");
+const bcrypt = require("bcryptjs");
+const sequelize = require("../config/db.js"); // Import sequelize to manage transactions
 
 const logError = (functionName, error) => {
   console.error(`Error in ${functionName}:`, error.message);
@@ -12,7 +11,7 @@ const logSuccess = (functionName, message) => {
   console.log(`Success in ${functionName}: ${message}`);
 };
 
-export const createStaff = async staffData => {
+const createStaff = async staffData => {
   const functionName = "createStaff";
   console.log(`${functionName} - Received staff data:`, staffData);
 
@@ -77,7 +76,7 @@ export const createStaff = async staffData => {
   }
 };
 
-export const getStaffById = async staffId => {
+const getStaffById = async staffId => {
   const functionName = "getStaffById";
   try {
     const staff = await Staff.findByPk(staffId);
@@ -94,7 +93,7 @@ export const getStaffById = async staffId => {
   }
 };
 
-export const getAllStaff = async (page, limit) => {
+const getAllStaff = async (page, limit) => {
   const functionName = "getAllStaff";
   try {
     if (isNaN(page) || page < 1 || isNaN(limit) || limit < 1) {
@@ -117,7 +116,7 @@ export const getAllStaff = async (page, limit) => {
   }
 };
 
-export const updateStaff = async (staffId, updateData) => {
+const updateStaff = async (staffId, updateData) => {
   const functionName = "updateStaff";
   console.log(`${functionName} - Received staff data for update:`, updateData);
   console.log(`${functionName} - Received staff ID:`, staffId);
@@ -160,7 +159,7 @@ export const updateStaff = async (staffId, updateData) => {
   }
 };
 
-export const deleteStaff = async staffId => {
+const deleteStaff = async staffId => {
   const functionName = "deleteStaff";
   console.log(`${functionName} - Received staff ID:`, staffId);
   try {
@@ -177,4 +176,12 @@ export const deleteStaff = async staffId => {
     logError(functionName, error);
     throw error;
   }
+};
+
+module.exports = {
+  createStaff,
+  getStaffById,
+  getAllStaff,
+  updateStaff,
+  deleteStaff,
 };

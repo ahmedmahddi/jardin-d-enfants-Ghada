@@ -21,7 +21,7 @@ const AboutContent = () => {
             Notre Histoire
           </h2>
           <p className="text-dark-blue leading-relaxed text-center">
-            Le Jardin d'enfants Ghada a été fondé en 1995 dans le but de fournir
+            Le Jardin d'enfants Ghada a été fondé en septembre 2000 dans le but de fournir
             des services de garde d'enfants de haute qualité aux familles de
             notre communauté. Au fil des années, nous avons grandi et étendu nos
             installations pour accueillir plus d'enfants et offrir une gamme
@@ -33,7 +33,7 @@ const AboutContent = () => {
             Notre Philosophie
           </h2>
           <p className="text-dark-blue leading-relaxed mb-4 text-center">
-            Chez Sunshine Daycare, nous croyons que chaque enfant est unique et
+            Chez Jardin d'enfants Ghada, nous croyons que chaque enfant est unique et
             mérite un environnement sûr, nourrissant et stimulant pour grandir
             et apprendre. Notre personnel expérimenté et attentionné est dédié à
             favoriser le développement physique, émotionnel, social et cognitif

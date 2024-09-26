@@ -1,7 +1,6 @@
-// models/child.model.js
-import { DataTypes, Model } from "sequelize";
-import sequelize from "../config/db.js";
-import User from "./user.model.js";
+const { DataTypes, Model } = require("sequelize");
+const sequelize = require("../config/db.js");
+const User = require("./user.model.js");
 
 class Children extends Model {}
 
@@ -41,7 +40,7 @@ Children.init(
       allowNull: false,
     },
     days: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.JSON, // Replaced ARRAY with JSON for MySQL compatibility
       allowNull: false,
     },
     parentId: {
@@ -52,7 +51,6 @@ Children.init(
         key: "id",
       },
     },
-
     parentName: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -89,4 +87,4 @@ Children.init(
   }
 );
 
-export default Children;
+module.exports = Children;

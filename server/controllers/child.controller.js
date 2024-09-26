@@ -1,13 +1,12 @@
-// controllers/child.controller.js
-import {
+const {
   createChild,
   getChildById,
   updateChild,
   deleteChild,
   getAllChildren,
-} from "../services/child.service.js";
+} = require("../services/child.service.js");
 
-export const create = async (req, res) => {
+const create = async (req, res) => {
   try {
     const child = await createChild(req.body);
     res.status(201).json(child);
@@ -16,7 +15,7 @@ export const create = async (req, res) => {
   }
 };
 
-export const getById = async (req, res) => {
+const getById = async (req, res) => {
   try {
     const child = await getChildById(req.params.id);
     if (!child) {
@@ -28,10 +27,9 @@ export const getById = async (req, res) => {
   }
 };
 
-export const getAll = async (req, res) => {
+const getAll = async (req, res) => {
   try {
     const { page, limit } = req.query;
-
     const children = await getAllChildren(parseInt(page), parseInt(limit));
     res.status(200).json(children);
   } catch (error) {
@@ -39,7 +37,7 @@ export const getAll = async (req, res) => {
   }
 };
 
-export const update = async (req, res) => {
+const update = async (req, res) => {
   try {
     const child = await updateChild(req.params.id, req.body);
     res.status(200).json(child);
@@ -48,11 +46,19 @@ export const update = async (req, res) => {
   }
 };
 
-export const remove = async (req, res) => {
+const remove = async (req, res) => {
   try {
     await deleteChild(req.params.id);
     res.status(204).send();
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
+};
+
+module.exports = {
+  create,
+  getById,
+  getAll,
+  update,
+  remove,
 };

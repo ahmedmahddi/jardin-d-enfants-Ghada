@@ -1,5 +1,5 @@
-import express from "express";
-import * as contact from "../controllers/contactus.controller.js";
+const express = require("express");
+const contact = require("../controllers/contactus.controller.js");
 
 const sanitizeKeys = (req, res, next) => {
   const sanitizedBody = {};
@@ -55,4 +55,4 @@ contactusRouter.post(
   contact.createContactController
 );
 
-export default contactusRouter;
+module.exports = contactusRouter;

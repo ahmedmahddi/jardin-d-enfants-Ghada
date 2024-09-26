@@ -1,7 +1,7 @@
-import { User } from "../models/index.js";
-import bcrypt from "bcryptjs";
+const { User } = require("../models/index.js");
+const bcrypt = require("bcryptjs");
 
-export const createUser = async userData => {
+const createUser = async userData => {
   // Hash the password before saving the user
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(userData.password, salt);
@@ -11,17 +11,17 @@ export const createUser = async userData => {
   return user;
 };
 
-export const getUserById = async userId => {
+const getUserById = async userId => {
   const user = await User.findByPk(userId);
   return user;
 };
 
-export const getAllUsers = async () => {
+const getAllUsers = async () => {
   const users = await User.findAll();
   return users;
 };
 
-export const updateUser = async (userId, updateData) => {
+const updateUser = async (userId, updateData) => {
   const user = await User.findByPk(userId);
   if (!user) {
     throw new Error("User not found");
@@ -37,7 +37,7 @@ export const updateUser = async (userId, updateData) => {
   return user;
 };
 
-export const deleteUser = async userId => {
+const deleteUser = async userId => {
   const user = await User.findByPk(userId);
   if (!user) {
     throw new Error("User not found");
@@ -46,7 +46,16 @@ export const deleteUser = async userId => {
   return user;
 };
 
-export const getUserByEmail = async email => {
+const getUserByEmail = async email => {
   const user = await User.findOne({ where: { email } });
   return user;
+};
+
+module.exports = {
+  createUser,
+  getUserById,
+  getAllUsers,
+  updateUser,
+  deleteUser,
+  getUserByEmail,
 };

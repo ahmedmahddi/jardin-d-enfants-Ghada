@@ -1,10 +1,10 @@
-import {
+const {
   loginUser,
   sendPasswordResetEmail,
   resetPassword,
-} from "../services/auth.service.js";
+} = require("../services/auth.service.js");
 
-export const login = async (req, res) => {
+const login = async (req, res) => {
   try {
     const { email, password, role } = req.body;
 
@@ -19,7 +19,7 @@ export const login = async (req, res) => {
   }
 };
 
-export const requestPasswordReset = async (req, res) => {
+const requestPasswordReset = async (req, res) => {
   try {
     const { email } = req.body;
 
@@ -34,7 +34,7 @@ export const requestPasswordReset = async (req, res) => {
   }
 };
 
-export const resetPasswordHandler = async (req, res) => {
+const resetPasswordHandler = async (req, res) => {
   try {
     const { token, newPassword } = req.body;
 
@@ -47,4 +47,10 @@ export const resetPasswordHandler = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
+};
+
+module.exports = {
+  login,
+  requestPasswordReset,
+  resetPasswordHandler,
 };

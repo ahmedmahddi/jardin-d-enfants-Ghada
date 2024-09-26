@@ -1,13 +1,13 @@
-import { Router } from "express";
-import {
+const express = require("express");
+const {
   createEnrollmentHandler,
   getAllEnrollmentsHandler,
   getEnrollmentByIdHandler,
   updateEnrollmentStatusHandler,
   deleteEnrollmentHandler,
-} from "../controllers/enrollment.controller.js";
+} = require("../controllers/enrollment.controller.js");
 
-const enrollmentRouter = Router();
+const enrollmentRouter = express.Router();
 
 enrollmentRouter.post("/", createEnrollmentHandler);
 enrollmentRouter.get("/", getAllEnrollmentsHandler);
@@ -15,4 +15,4 @@ enrollmentRouter.get("/:id", getEnrollmentByIdHandler);
 enrollmentRouter.patch("/:id/status", updateEnrollmentStatusHandler);
 enrollmentRouter.delete("/:id", deleteEnrollmentHandler);
 
-export default enrollmentRouter;
+module.exports = enrollmentRouter;

@@ -75,11 +75,11 @@ const InvoiceDetailsModal = ({ isOpen, invoice, onClose }) => {
             <tbody>
               <tr>
                 <td className="border border-gray-300 p-2">{childName}</td>
-                <td className="border border-gray-300 p-2">${amount}</td>
+                <td className="border border-gray-300 p-2">{amount} TND</td>
               </tr>
               <tr className="table-total bg-gray-200 font-bold">
                 <td className="border border-gray-300 p-2">Total</td>
-                <td className="border border-gray-300 p-2">${amount}</td>
+                <td className="border border-gray-300 p-2">{amount} TND</td>
               </tr>
             </tbody>
           </table>
