@@ -102,13 +102,13 @@ const ChildrenList = () => {
   const totalPages = totalCount ? Math.ceil(totalCount / limit) : 1;
 
   return (
-    <div className="max-w-6xl mx-auto p-6 bg-white shadow-lg rounded-md">
-      <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">
+    <div className="max-w-full mx-auto p-4 bg-white shadow-lg rounded-md sm:p-6 md:p-8 lg:max-w-6xl">
+      <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center text-gray-800">
         Liste des Enfants
       </h1>
-      <div className="flex justify-end">
+      <div className="flex justify-end mb-4">
         <button
-          className="bg-orange-500 text-white rounded px-4 py-2 mr-2 mb-4"
+          className="bg-orange-500 text-white rounded px-4 py-2 text-sm md:text-base"
           onClick={handleDownload}
         >
           <FontAwesomeIcon icon={faDownload} className="mr-2" />
@@ -116,105 +116,109 @@ const ChildrenList = () => {
         </button>
       </div>
 
-      <div className="flex justify-between mb-4">
+      <div className="mb-4">
         <input
           type="text"
           placeholder="Rechercher par nom..."
-          className="border rounded w-full py-2 px-4 mr-2"
+          className="border rounded w-full py-2 px-4 text-sm"
           onChange={e => debouncedSetSearchQuery(e.target.value)}
         />
       </div>
-      <table className="w-full table-auto border-collapse">
-        <thead>
-          <tr className="bg-gray-100">
-            <th
-              className="px-4 py-2 cursor-pointer"
-              onClick={() => handleSort("childName")}
-            >
-              Nom et Prénom {getSortIcon("childName")}
-            </th>
-            <th
-              className="px-4 py-2 cursor-pointer"
-              onClick={() => handleSort("birthdate")}
-            >
-              Date de Naissance {getSortIcon("birthdate")}
-            </th>
-            <th
-              className="px-4 py-2 cursor-pointer"
-              onClick={() => handleSort("parentName")}
-            >
-              Nom du Parent {getSortIcon("parentName")}
-            </th>
-            <th
-              className="px-4 py-2 cursor-pointer"
-              onClick={() => handleSort("parentPhone")}
-            >
-              Téléphone du Parent {getSortIcon("parentPhone")}
-            </th>
-            <th
-              className="px-4 py-2 cursor-pointer"
-              onClick={() => handleSort("address")}
-            >
-              Adresse {getSortIcon("address")}
-            </th>
-            <th
-              className="px-4 py-2 cursor-pointer"
-              onClick={() => handleSort("medications")}
-            >
-              Médications {getSortIcon("medications")}
-            </th>
-            <th className="px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredData.map((child, index) => (
-            <tr
-              key={child.id}
-              className={`text-center ${
-                index % 2 === 0 ? "bg-white" : "bg-gray-50"
-              } border-b`}
-            >
-              <td className="px-4 py-2">{child.childName}</td>
-              <td className="px-4 py-2">
-                {new Date(child.birthdate).toLocaleDateString()}
-              </td>
-              <td className="px-4 py-2">{child.parentName}</td>
-              <td className="px-4 py-2">{child.parentPhone}</td>
-              <td className="px-4 py-2">{child.address}</td>
-              <td className="px-4 py-2">{child.medications}</td>
-              <td className="px-4 py-2 flex justify-around">
-                <button
-                  className="text-gray-500 hover:text-blue-500"
-                  onClick={() => handleView(child)}
-                >
-                  <FontAwesomeIcon icon={faEye} />
-                </button>
-                <button
-                  className="text-gray-500 hover:text-green-500"
-                  onClick={() => handleUpdate(child)}
-                >
-                  <FontAwesomeIcon icon={faEdit} />
-                </button>
-                <button
-                  className="text-gray-500 hover:text-red-500"
-                  onClick={() => handleDelete(child.id)}
-                >
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-              </td>
+
+      <div className="overflow-x-auto">
+        <table className="w-full table-auto border-collapse">
+          <thead>
+            <tr className="bg-gray-100">
+              <th
+                className="px-2 md:px-4 py-2 cursor-pointer"
+                onClick={() => handleSort("childName")}
+              >
+                Nom et Prénom {getSortIcon("childName")}
+              </th>
+              <th
+                className="px-2 md:px-4 py-2 cursor-pointer"
+                onClick={() => handleSort("birthdate")}
+              >
+                Date de Naissance {getSortIcon("birthdate")}
+              </th>
+              <th
+                className="px-2 md:px-4 py-2 cursor-pointer"
+                onClick={() => handleSort("parentName")}
+              >
+                Nom du Parent {getSortIcon("parentName")}
+              </th>
+              <th
+                className="px-2 md:px-4 py-2 cursor-pointer"
+                onClick={() => handleSort("parentPhone")}
+              >
+                Téléphone du Parent {getSortIcon("parentPhone")}
+              </th>
+              <th
+                className="px-2 md:px-4 py-2 cursor-pointer"
+                onClick={() => handleSort("address")}
+              >
+                Adresse {getSortIcon("address")}
+              </th>
+              <th
+                className="px-2 md:px-4 py-2 cursor-pointer"
+                onClick={() => handleSort("medications")}
+              >
+                Médications {getSortIcon("medications")}
+              </th>
+              <th className="px-2 md:px-4 py-2">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="flex justify-between mt-4">
+          </thead>
+          <tbody>
+            {filteredData.map((child, index) => (
+              <tr
+                key={child.id}
+                className={`text-center ${
+                  index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                } border-b`}
+              >
+                <td className="px-2 md:px-4 py-2">{child.childName}</td>
+                <td className="px-2 md:px-4 py-2">
+                  {new Date(child.birthdate).toLocaleDateString()}
+                </td>
+                <td className="px-2 md:px-4 py-2">{child.parentName}</td>
+                <td className="px-2 md:px-4 py-2">{child.parentPhone}</td>
+                <td className="px-2 md:px-4 py-2">{child.address}</td>
+                <td className="px-2 md:px-4 py-2">{child.medications}</td>
+                <td className="px-2 md:px-4 py-2 flex justify-around">
+                  <button
+                    className="text-gray-500 hover:text-blue-500"
+                    onClick={() => handleView(child)}
+                  >
+                    <FontAwesomeIcon icon={faEye} />
+                  </button>
+                  <button
+                    className="text-gray-500 hover:text-green-500"
+                    onClick={() => handleUpdate(child)}
+                  >
+                    <FontAwesomeIcon icon={faEdit} />
+                  </button>
+                  <button
+                    className="text-gray-500 hover:text-red-500"
+                    onClick={() => handleDelete(child.id)}
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="flex flex-col sm:flex-row justify-between mt-4 items-center">
         <button
-          className="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50"
+          className="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50 mb-2 sm:mb-0"
           onClick={handlePreviousPage}
           disabled={page === 1}
         >
           Précédent
         </button>
-        <span>
+        <span className="text-sm">
           Page {page} sur {totalPages}
         </span>
         <button
@@ -225,6 +229,7 @@ const ChildrenList = () => {
           Suivant
         </button>
       </div>
+
       <ConfirmationModal
         isOpen={isModalOpen}
         message={modalMessage}

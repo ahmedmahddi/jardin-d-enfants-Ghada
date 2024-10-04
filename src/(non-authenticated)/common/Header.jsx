@@ -1,12 +1,30 @@
 import React, { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext"; // Import the useAuth hook
 import logo from "../assets/images/logo-JDG.png";
 import "../../styles/tailwind.css";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { isAuthenticated, user } = useAuth(); // Access authentication state and user details
 
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  // Determine the correct path and label based on the user's role
+  const getDashboardPath = () => {
+    if (user.role === "admin") {
+      return "/admin";
+    } else if (user.role === "parent") {
+      return "/parent";
+    } else if (user.role === "staff") {
+      return "/staff";
+    }
+    return "/login"; // Fallback if the role is undefined
+  };
+
+  const getDashboardLabel = () => {
+    return `Espace ${user.role}`;
   };
 
   return (
@@ -47,20 +65,34 @@ const Header = () => {
             Contactez Nous
           </a>
         </div>
+
         <div className="hidden lg:flex space-x-4">
-          <a
-            href="/login"
-            className="bg-orange text-white py-2 px-4 rounded hover:bg-orange-dark font-medium"
-          >
-            Se Connecter
-          </a>
-          <a
-            href="/enrollment"
-            className="bg-orange text-white py-2 px-4 rounded hover:bg-orange-dark font-medium"
-          >
-            Inscription
-          </a>
+          {/* Conditionally render the button based on authentication status */}
+          {isAuthenticated ? (
+            <a
+              href={getDashboardPath()}
+              className="bg-orange text-white py-2 px-4 rounded hover:bg-orange-dark font-medium"
+            >
+              {getDashboardLabel()}
+            </a>
+          ) : (
+            <>
+              <a
+                href="/login"
+                className="bg-orange text-white py-2 px-4 rounded hover:bg-orange-dark font-medium"
+              >
+                Se Connecter
+              </a>
+              <a
+                href="/enrollment"
+                className="bg-orange text-white py-2 px-4 rounded hover:bg-orange-dark font-medium"
+              >
+                Inscription
+              </a>
+            </>
+          )}
         </div>
+
         <button
           onClick={handleMenuToggle}
           className="lg:hidden text-gray-dark hover:text-orange focus:outline-none"
@@ -93,6 +125,7 @@ const Header = () => {
           </svg>
         </button>
       </nav>
+
       {menuOpen && (
         <div className="lg:hidden bg-lightPeach shadow-md text-center">
           <div className="container mx-auto px-6 py-4">
@@ -123,18 +156,31 @@ const Header = () => {
             >
               Contactez Nous
             </a>
-            <a
-              href="/login"
-              className="block bg-orange text-white py-2 px-4 rounded text-center mt-2"
-            >
-              Se Connecter
-            </a>
-            <a
-              href="/enrollment"
-              className="block bg-orange text-white py-2 px-4 rounded text-center mt-2"
-            >
-              Inscription
-            </a>
+
+            {/* Conditionally render the mobile version of the login/enrollment buttons */}
+            {isAuthenticated ? (
+              <a
+                href={getDashboardPath()}
+                className="block bg-orange text-white py-2 px-4 rounded text-center mt-2"
+              >
+                {getDashboardLabel()}
+              </a>
+            ) : (
+              <>
+                <a
+                  href="/login"
+                  className="block bg-orange text-white py-2 px-4 rounded text-center mt-2"
+                >
+                  Se Connecter
+                </a>
+                <a
+                  href="/enrollment"
+                  className="block bg-orange text-white py-2 px-4 rounded text-center mt-2"
+                >
+                  Inscription
+                </a>
+              </>
+            )}
           </div>
         </div>
       )}

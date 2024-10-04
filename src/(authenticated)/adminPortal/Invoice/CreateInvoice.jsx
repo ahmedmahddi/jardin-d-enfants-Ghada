@@ -101,7 +101,7 @@ const CreateInvoice = () => {
   dueDate.setDate(currentDate.getDate() + 15);
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen bg-[#f7f7f7]">
       <div className="w-full max-w-md bg-white shadow-md rounded-lg p-8">
         <h1 className="text-2xl font-bold mb-4 text-center text-orange-500">
           Créer une facture

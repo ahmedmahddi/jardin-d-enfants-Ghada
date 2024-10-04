@@ -29,9 +29,11 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="bg-gray-100 min-h-screen p-4">
+    <div className="bg-[#f7f7f7] min-h-screen">
       <div className="lg:p-8 max-w-7xl mx-auto space-y-8">
-        <h1 className="text-2xl lg:text-3xl font-bold mb-4">Tableau de bord</h1>
+        <h1 className="text-2xl lg:text-3xl font-bold mb-4 text-center">
+          Tableau de bord
+        </h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div className="lg:col-span-1">
             <ChildrenByGenderChart />

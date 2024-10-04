@@ -7,7 +7,6 @@ const Login = () => {
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
-    role: "",
     rememberMe: false,
   });
   const [error, setError] = useState("");
@@ -24,7 +23,7 @@ const Login = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const response = await login(credentials);
+    const response = await login(credentials); // No role in credentials now
     if (response.success) {
       navigate("/admin");
     } else {
@@ -82,27 +81,6 @@ const Login = () => {
                 required
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
-            </div>
-            <div>
-              <label
-                htmlFor="role"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Choisir un Role
-              </label>
-              <select
-                id="role"
-                name="role"
-                value={credentials.role}
-                onChange={handleChange}
-                required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              >
-                <option value="">Select a role</option>
-                <option value="parent">Parent</option>
-                <option value="admin">Admin</option>
-                <option value="staff">Enseignant</option>
-              </select>
             </div>
             <div className="flex items-center">
               <input

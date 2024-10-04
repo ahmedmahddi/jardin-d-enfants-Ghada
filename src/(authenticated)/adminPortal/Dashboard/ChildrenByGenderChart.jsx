@@ -14,7 +14,7 @@ const ChildrenByGenderChart = () => {
         child => child.gender === "Masculin"
       ).length;
       const girls = data.children.filter(
-        child => child.gender === "Femenin"
+        child => child.gender === "Féminin"
       ).length;
       setChildrenData({ boys, girls });
     };
@@ -46,7 +46,7 @@ const ChildrenByGenderChart = () => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md w-full lg:w-250 h-auto">
-      <h2 className="text-md lg:text-xl font-semibold mb-4">
+      <h2 className="text-md lg:text-xl font-semibold mb-4 text-center">
         Enfants par genre
       </h2>
       <canvas ref={chartRef}></canvas>

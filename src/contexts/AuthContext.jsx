@@ -7,13 +7,14 @@ export const AuthContext = createContext();
 // Utility function to manage token
 const tokenManager = {
   getToken: () => {
+    // Check both localStorage and sessionStorage for the token
     return localStorage.getItem("token") || sessionStorage.getItem("token");
   },
   setToken: (token, rememberMe) => {
     if (rememberMe) {
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", token); // Persist token in localStorage
     } else {
-      sessionStorage.setItem("token", token);
+      sessionStorage.setItem("token", token); // Store token in sessionStorage
     }
   },
   removeToken: () => {
@@ -28,6 +29,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check token when the component mounts
     const token = tokenManager.getToken();
     if (token) {
       verifyToken(token);
@@ -54,13 +56,14 @@ export const AuthProvider = ({ children }) => {
         );
       } else {
         console.warn("Token verification failed.");
-        logout();
+        logout(); // Logout if token is invalid
       }
     } catch (error) {
       console.error("Error verifying token:", error);
-      logout();
+      logout(); // Ensure the user is logged out in case of verification failure
+    } finally {
+      setLoading(false); // Ensure loading state is updated
     }
-    setLoading(false);
   };
 
   const login = async credentials => {
@@ -75,8 +78,15 @@ export const AuthProvider = ({ children }) => {
       if (response.status === 200 && response.data) {
         setIsAuthenticated(true);
         setUser(response.data.user);
+
+        // Store the token and user information
         tokenManager.setToken(response.data.token, credentials.rememberMe);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+        if (credentials.rememberMe) {
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+        } else {
+          sessionStorage.setItem("user", JSON.stringify(response.data.user));
+        }
+
         return { success: true };
       } else {
         console.warn("Login failed:", response.data.message);
@@ -99,6 +109,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     tokenManager.removeToken();
     localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
   };
 
   return (
